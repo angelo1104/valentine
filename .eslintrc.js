@@ -1,13 +1,12 @@
 module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
-  "no-use-before-define": ["error", { variables: false }],
   env: {
     node: true,
   },
   extends: [
     "eslint:recommended",
-    "airbnb-typescript",
+    "airbnb",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     // Prettier plugin and recommended rules
@@ -21,5 +20,6 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "no-console": "off",
     "import/extensions": "off",
+    "import/no-unresolved": "off",
   },
 };
