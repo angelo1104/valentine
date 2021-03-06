@@ -1,10 +1,12 @@
 {
-  "compileOnSave": false,
+  "compileOnSave": true,
   "compilerOptions": {
     "allowJs": true,
     "target": "ES5",
     "strict": true,
     "outDir": "build",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["node"],
+    "skipLibCheck": true
   }
 }

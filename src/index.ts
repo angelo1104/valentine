@@ -1,3 +1,10 @@
-import crypto from "crypto";
+import { Block } from "./libs/block";
 
-console.log(crypto.createHash("sha512").update("200").digest("hex"));
+const block = new Block({
+  data: "hola",
+  hash: "ho",
+  index: 2,
+  nonce: 3,
+  prevHash: "4",
+  timestamp: 5,
+});
