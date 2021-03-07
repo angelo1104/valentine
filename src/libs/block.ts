@@ -1,7 +1,5 @@
 import getTime from "../utils/getTime";
-import range from "../utils/range";
 import proofOfWork from "../utils/proofOfWork";
-import hash from "../utils/hash";
 
 interface BlockInterface {
   index: number;
@@ -13,28 +11,28 @@ interface BlockInterface {
 }
 
 class Block {
-  constructor(public block: BlockInterface) {
+  private block: BlockInterface;
+
+  public readonly difficulty: number;
+
+  constructor(block: BlockInterface, difficulty: number) {
     this.block = block;
+    this.difficulty = difficulty;
   }
 
   getString() {
     return JSON.stringify(this);
   }
 
-  getData() {
+  getBlock() {
     return JSON.stringify(this.block);
   }
 
-  mine() {
-    const maxNonce = 4000000000;
-
-    let previousTime = getTime();
-
-    console.log(previousTime);
-
-    let mined = false;
-
+  mine(): BlockInterface {
     console.log("mining..");
+    const maxNonce = 4000000000;
+    let previousTime = getTime();
+    let mined = false;
 
     while (!mined) {
       for (let nonce = 0; nonce <= maxNonce; nonce += 1) {
@@ -54,9 +52,7 @@ class Block {
             timestamp: currentTime,
           };
 
-          if (proofOfWork(block, 10)) {
-            console.log(block, hash(block));
-
+          if (proofOfWork(block, this.difficulty)) {
             // set the block
             this.block = block;
             // break the while loop
@@ -68,6 +64,8 @@ class Block {
 
       mined = true;
     }
+
+    return this.block;
   }
 }
 
