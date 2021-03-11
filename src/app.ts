@@ -1,10 +1,13 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import sizeof from "object-sizeof";
 import { Block } from "./libs/block";
 import hash from "./utils/hash";
-import Node, { NodeTypes } from "./libs/nodes/node";
+import { NodeTypes } from "./libs/nodes/node";
 import typeDefs from "./server/typeDefs";
 import resolvers from "./server/resolvers";
+import FullNode from "./libs/nodes/full-node";
+import MerkleTree from "./utils/merkleTree";
 
 // initialize environment variables
 dotenv.config();
@@ -35,6 +38,12 @@ console.log(block.mine(), hash(JSON.parse(block.getBlock())));
 
 // start server on port 4000
 const port = process.env.PORT || "4000";
-const node = new Node(NodeTypes.FULL, typeDefs, resolvers);
+const node = new FullNode(NodeTypes.FULL, typeDefs, resolvers);
 
-node.startServer(parseInt(port, 10));
+node.startServer(parseInt(port, 10), process.env.MONGODB_URL || "");
+
+const arr = ["hola", "mola", "dola", "rola", "cura", "mure"];
+
+const root = MerkleTree.generateMerkleTree(arr);
+
+console.log("verify", MerkleTree.verifyRoot(root, [...arr]));
