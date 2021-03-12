@@ -31,8 +31,8 @@ class BlockChain {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  addBlock(block: Block, mine = false) {
+  // eslint-disable-next-line class-methods-use-this,consistent-return
+  async addBlock(block: Block, mine = false) {
     // check the blocks legibility
     if (block.verifyBlock()) {
       // add block
@@ -42,7 +42,7 @@ class BlockChain {
 
       newBlock.save((error: any, doc: any) => {
         if (error) throw new Error(error.message);
-        else console.log(doc);
+        else return doc;
       });
     } else if (mine) {
       // mine the block
@@ -54,10 +54,12 @@ class BlockChain {
           ...block.getBlock(),
         });
 
-        newBlock.save((error: any, doc: any) => {
-          if (error) throw new Error(error.message);
-          else console.log(doc);
-        });
+        try {
+          const doc = await newBlock.save();
+          return doc;
+        } catch (e) {
+          throw new Error(e.message);
+        }
       } else {
         throw new Error("Block is invalid");
       }
@@ -79,9 +81,11 @@ class BlockChain {
         difficulty: 1,
       });
 
-      this.addBlock(block, mine);
+      const newBlock = this.addBlock(block, mine);
+
+      return newBlock;
     } catch (e) {
-      console.log("error", e);
+      throw new Error(e.message);
     }
   }
 
@@ -105,10 +109,8 @@ class BlockChain {
     // eslint-disable-next-line consistent-return
     this.loopThroughChain((block) => {
       const newBlock = new Block(block);
-      console.log("logger");
+      // last block is not null
       if (lastBlock) {
-        // last block is not null
-
         // check if block is mined
         if (!newBlock.verifyBlock()) return false;
 
@@ -116,21 +118,21 @@ class BlockChain {
         if (hash(lastBlock.getBlockData()) !== newBlock.getBlock().prevHash)
           return false;
 
-        // check is index is valid
-        if (lastBlock.getBlock().index + 1 === newBlock.getBlock().index)
-          return true;
+        // check if index is valid
+        if (lastBlock.getBlock().index + 1 !== newBlock.getBlock().index)
+          return false;
       }
 
       lastBlock = newBlock;
+    }).then(() => {
+      return true;
     });
   }
 
   // eslint-disable-next-line class-methods-use-this
   async loopThroughChain(callBack: BlockLoopCallback) {
     // create cursor see on mongoose docs
-    const cursor = BlockModel.find()
-      .cursor()
-      .addCursorFlag("noCursorTimeout", true);
+    const cursor = BlockModel.find().cursor();
 
     for (
       let doc = await cursor.next();

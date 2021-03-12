@@ -1,3 +1,4 @@
+import sizeof from "object-sizeof";
 import getTime from "../utils/getTime";
 import proofOfWork from "../utils/proofOfWork";
 
@@ -70,6 +71,9 @@ class Block {
 
     const maxNonce = 4000000000;
     if (this.block.nonce > maxNonce || this.block.nonce < 0) return false;
+
+    // if size fo block is less than 1mb or 1 million bytes
+    if (sizeof(this.block) > 1000000) return false;
 
     return true;
   }

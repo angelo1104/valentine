@@ -26,7 +26,7 @@ class Node {
 
   public readonly app: Express;
 
-  public readonly server: ApolloServer;
+  protected server: ApolloServer;
 
   public db: Connection | undefined;
 
