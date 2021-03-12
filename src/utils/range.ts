@@ -1,5 +1,5 @@
 function range(x: number): Array<number> {
-  return Array.from({ length: x + 1 }, (a, i) => i);
+  return Array.from({ length: x }, (a, i) => i);
 }
 
 export default range;

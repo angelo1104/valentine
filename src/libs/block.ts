@@ -1,5 +1,6 @@
 import getTime from "../utils/getTime";
 import proofOfWork from "../utils/proofOfWork";
+import hash from "../utils/hash";
 
 interface BlockInterface {
   index: number;
@@ -7,7 +8,6 @@ interface BlockInterface {
   nonce: number;
   timestamp: number;
   prevHash: string;
-  hash: string;
 }
 
 class Block {
@@ -20,11 +20,15 @@ class Block {
     this.difficulty = difficulty;
   }
 
+  getBlock() {
+    return this.block;
+  }
+
   getString() {
     return JSON.stringify(this);
   }
 
-  getBlock() {
+  getBlockData() {
     return JSON.stringify(this.block);
   }
 
@@ -66,6 +70,15 @@ class Block {
     }
 
     return this.block;
+  }
+
+  verifyBlock() {
+    if (!proofOfWork(this.block, this.difficulty)) return false;
+
+    const maxNonce = 4000000000;
+    if (this.block.nonce > maxNonce || this.block.nonce < 0) return false;
+
+    return true;
   }
 }
 

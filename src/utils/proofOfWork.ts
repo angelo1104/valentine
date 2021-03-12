@@ -5,7 +5,7 @@ import range from "./range";
 const proofOfWork = (block: BlockInterface, difficulty: number): boolean => {
   const blockHash = hash(block);
 
-  const puzzleZeroes = range(difficulty - 1)
+  const puzzleZeroes = range(difficulty)
     .map(() => "0")
     .join("");
 

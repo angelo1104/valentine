@@ -21,10 +21,6 @@ const BlockSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
-  hash: {
-    required: true,
-    type: String,
-  },
 });
 
 const BlockModel = mongoose.model("chain", BlockSchema);

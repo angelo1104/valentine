@@ -84,17 +84,6 @@ class Node {
       },
     );
   }
-
-  getChainFromDb() {
-    BlockModel.find({}, (err, docs) => {
-      if (err)
-        console.log(
-          "Error encountered while retrieving the chain from mongo db",
-          err,
-        );
-      else if (docs) this.chain = docs;
-    });
-  }
 }
 
 export default Node;
