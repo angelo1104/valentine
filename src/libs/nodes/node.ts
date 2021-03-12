@@ -30,13 +30,10 @@ class Node {
 
   public db: Connection | undefined;
 
-  private chain: any[];
-
   constructor(type: NodeTypes, typeDefs: any, resolvers: any) {
     this.type = type;
     const app = express();
     this.app = app;
-    this.chain = [];
 
     // apollo graphql server
     const server = new ApolloServer({
@@ -81,6 +78,7 @@ class Node {
         else {
           this.db = mongoose.connection;
         }
+        console.log("connected to mongodb");
       },
     );
   }

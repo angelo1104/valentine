@@ -21,6 +21,10 @@ const BlockSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  difficulty: {
+    required: true,
+    type: Number,
+  },
 });
 
 const BlockModel = mongoose.model("chain", BlockSchema);

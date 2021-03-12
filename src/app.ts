@@ -12,16 +12,6 @@ import BlockChain from "./libs/block-chain";
 // initialize environment variables
 dotenv.config();
 
-mongoose.connect(
-  process.env.MONGODB_URL || "",
-  {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useFindAndModify: true,
-  },
-  (err) => console.log(`Error in mongo db ${err}`),
-);
-
 // start server on port 4000
 const port = process.env.PORT || "4000";
 const node = new FullNode(NodeTypes.FULL, typeDefs, resolvers);
