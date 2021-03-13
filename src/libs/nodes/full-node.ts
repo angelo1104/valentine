@@ -3,7 +3,7 @@ import Node, { NodeTypes } from "./node";
 import BlockChain from "../block-chain";
 
 class FullNode extends Node {
-  private blockChain: BlockChain;
+  private readonly blockChain: BlockChain;
 
   constructor(
     public type: NodeTypes,

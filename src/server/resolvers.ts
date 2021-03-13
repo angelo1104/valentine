@@ -13,7 +13,6 @@ const resolvers = {
     },
     async verifyChain(_: any, __: any, { blockChain }: Context) {
       const valid = await blockChain.verifyChain();
-      console.log("valid", valid);
       return valid;
     },
   },

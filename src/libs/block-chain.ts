@@ -4,7 +4,7 @@ import BlockModel from "./mongodb/BlockModel";
 import hash from "../utils/hash";
 import getBlockFromDoc from "../utils/getBlockFromDoc";
 
-type BlockLoopCallback = (block: Block) => void;
+type BlockLoopCallback = (block: Block) => boolean;
 
 class BlockChain {
   async createGenesis(data: any) {
@@ -78,8 +78,6 @@ class BlockChain {
     try {
       const lastBlock: Block | null = await this.getLastBlock();
 
-      console.log("laster", lastBlock);
-
       if (lastBlock) {
         const block = new Block({
           index: lastBlock?.getBlock().index + 1,
@@ -94,7 +92,6 @@ class BlockChain {
         return newBlock;
       }
     } catch (e) {
-      console.log("perror", e);
       throw new Error(e.message);
     }
   }
@@ -152,6 +149,7 @@ class BlockChain {
         }
 
         lastBlock = block;
+        return valid;
       });
 
       return valid;
@@ -164,6 +162,7 @@ class BlockChain {
   async loopThroughChain(callBack: BlockLoopCallback) {
     // create cursor see on mongoose docs
     const cursor = BlockModel.find().cursor();
+    let i = 0;
 
     for (
       let doc = await cursor.next();
@@ -172,9 +171,16 @@ class BlockChain {
       doc = await cursor.next()
     ) {
       try {
-        callBack(getBlockFromDoc(doc));
+        // eslint-disable-next-line no-await-in-loop
+        const valid = await callBack(getBlockFromDoc(doc));
+
+        if (!valid) {
+          break;
+        }
+
+        i += 1;
       } catch (e) {
-        console.log("error", e);
+        throw new Error(e.message);
       }
     }
   }
