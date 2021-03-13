@@ -1,17 +1,8 @@
 import { gql } from "apollo-server-express";
+import Block from "./Block";
+import BlockChain from "./BlockChain";
 
 const typeDefs = gql`
-  scalar JSON
-
-  type Block {
-    index: Int!
-    nonce: Float!
-    timestamp: Float!
-    data: JSON!
-    prevHash: String!
-    difficulty: Int!
-  }
-
   type Query {
     me: String!
     verifyChain: Boolean!
@@ -22,4 +13,4 @@ const typeDefs = gql`
   }
 `;
 
-export default typeDefs;
+export default [typeDefs, Block, BlockChain];
