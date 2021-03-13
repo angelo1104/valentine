@@ -76,9 +76,9 @@ class Node {
       (err) => {
         if (err) console.log(`Error in mongo db ${err}}`);
         else {
+          console.log("connected to mongodb");
           this.db = mongoose.connection;
         }
-        console.log("connected to mongodb");
       },
     );
   }

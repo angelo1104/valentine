@@ -22,12 +22,8 @@ class Block {
     return this.block;
   }
 
-  getBlockData() {
-    return JSON.stringify(this.block);
-  }
-
   mine(): BlockInterface {
-    console.log("mining..");
+    console.log("mining..mine the mine");
     const maxNonce = 4000000000;
     let previousTime = getTime();
     let mined = false;

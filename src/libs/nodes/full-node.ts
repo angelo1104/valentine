@@ -1,6 +1,6 @@
+import { ApolloServer } from "apollo-server-express";
 import Node, { NodeTypes } from "./node";
 import BlockChain from "../block-chain";
-import { ApolloServer } from "apollo-server-express";
 
 class FullNode extends Node {
   private blockChain: BlockChain;
@@ -22,6 +22,9 @@ class FullNode extends Node {
     });
 
     this.server = server;
+    this.blockChain.createGenesis({
+      hola: "robert kiyosaki",
+    });
   }
 
   start(port = 4000, mongoDbUrl: string) {
