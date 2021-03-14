@@ -6,6 +6,11 @@ const typeDefs = gql`
     length: Int
     valid: Boolean
   }
+
+  type BasicInfo {
+    length: Int!
+    lastBlock: Block
+  }
 `;
 
 export default typeDefs;

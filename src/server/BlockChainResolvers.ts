@@ -6,6 +6,10 @@ const resolvers = {
       const valid = await blockChain.verifyChain();
       return valid;
     },
+    async basicInfo(_: any, __: any, { blockChain }: Context) {
+      const basicInfo = await blockChain.getBasicInfo();
+      return basicInfo;
+    },
   },
   Mutation: {
     async createBlock(_: any, { data }: any, { blockChain }: Context) {

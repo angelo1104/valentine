@@ -11,4 +11,4 @@ dotenv.config();
 const port = process.env.PORT || "4000";
 const node = new FullNode(NodeTypes.FULL, typeDefs, resolvers);
 
-node.startServer(parseInt(port, 10), process.env.MONGODB_URL || "");
+node.start(parseInt(port, 10), process.env.MONGODB_URL || "");

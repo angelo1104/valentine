@@ -6,6 +6,7 @@ const typeDefs = gql`
   type Query {
     me: String!
     verifyChain: Boolean!
+    basicInfo: BasicInfo!
   }
 
   type Mutation {

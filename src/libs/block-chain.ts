@@ -1,10 +1,10 @@
-import { Block, BlockInterface } from "./block";
+import { Block } from "./block";
 import range from "../utils/range";
 import BlockModel from "./mongodb/BlockModel";
 import hash from "../utils/hash";
 import getBlockFromDoc from "../utils/getBlockFromDoc";
-
-type BlockLoopCallback = (block: Block) => boolean;
+import loopThroughEachDoc from "../utils/loopThroughEachDoc";
+import getLengthOfChain from "../utils/getLengthOfCollection";
 
 class BlockChain {
   async createGenesis(data: any) {
@@ -43,8 +43,6 @@ class BlockChain {
 
       try {
         const doc = await newBlock.save();
-        // eslint-disable-next-line no-underscore-dangle
-        // eslint-disable-next-line no-underscore-dangle
         return getBlockFromDoc(doc);
       } catch (e) {
         throw new Error(e.message);
@@ -114,6 +112,7 @@ class BlockChain {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async verifyChain(): Promise<boolean> {
     let lastBlock: Block | null = null;
 
@@ -121,7 +120,7 @@ class BlockChain {
     try {
       let valid = true;
 
-      await this.loopThroughChain((block) => {
+      await loopThroughEachDoc(BlockModel, (block) => {
         // last block is not null
         if (lastBlock) {
           // check if block is mined
@@ -158,41 +157,14 @@ class BlockChain {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async loopThroughChain(callBack: BlockLoopCallback) {
-    // create cursor see on mongoose docs
-    const cursor = BlockModel.find().cursor();
-    let i = 0;
+  async getBasicInfo() {
+    const lengthOfChain = await getLengthOfChain(BlockModel);
+    const lastBlock = await this.getLastBlock();
 
-    for (
-      let doc = await cursor.next();
-      doc != null;
-      // eslint-disable-next-line no-await-in-loop
-      doc = await cursor.next()
-    ) {
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        const valid = await callBack(getBlockFromDoc(doc));
-
-        if (!valid) {
-          break;
-        }
-
-        i += 1;
-      } catch (e) {
-        throw new Error(e.message);
-      }
-    }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  async getLengthOfChain() {
-    try {
-      const count = await BlockModel.countDocuments().exec();
-      return count;
-    } catch (e) {
-      throw new Error(e.message);
-    }
+    return {
+      length: lengthOfChain,
+      lastBlock: lastBlock?.getBlock(),
+    };
   }
 }
 
