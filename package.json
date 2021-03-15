@@ -1,0 +1,21 @@
+{
+  "name": "valentine",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/angelo1104/valentine.git",
+  "author": "Ishika&Angelo",
+  "license": "MIT",
+  "scripts": {
+    "dev:app": "lerna run dev --scope=module1",
+    "start:app": "node --rs ./app/build/app.js",
+    "build:app": "tsc ./app/src",
+    "lint:app": "eslint ./app/src",
+    "fix:app": "eslint ./app/src --fix"
+  },
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "lerna": "^4.0.0",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.3"
+  }
+}
