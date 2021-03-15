@@ -98,11 +98,20 @@ const resolvers = {
     me: () => "Hello hello hello seed node kiyosaki here.",
   },
   Mutation: {
-    addNode: (_, { input: { address, length, lastBlock } }) => {
-      return {
+    addNode: async (_, { input: { address, length, lastBlock } }) => {
+      const node = new Node({
         address,
         length,
         lastBlock,
+      });
+
+      const nodeDoc = await node.save();
+
+      console.log(nodeDoc);
+      return {
+        address: nodeDoc?.address,
+        length: nodeDoc?.length,
+        lastBlock: nodeDoc?.lastBlock,
       };
     },
   },
