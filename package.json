@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Ishika&Angelo",
+  "type": "commonjs",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "ts-node-dev src/app.ts",
     "start": "node build/app.js",
     "build": "./node_modules/.bin/tsc",
     "lint": "eslint src",
@@ -30,7 +31,7 @@
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
-    "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.6",
     "typescript": "^4.2.3"
   },
   "dependencies": {
