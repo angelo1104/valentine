@@ -2,21 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f60b88a-dc83-4bca-9b8a-32e337ca5792" name="Default Changelist" comment="Made sure that the loop breaks if the block chain is found invalid at any point no memory resources wasted.">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/pages/_app.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/pages/api/graphql.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/pages/api/hello.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/pages/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/public/vercel.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/styles/Home.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helpers/seed-node/styles/globals.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/README.html" beforeDir="false" afterPath="$PROJECT_DIR$/README.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Valentine.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Valentine.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpers/seed-node/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/seed-node/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpers/seed-node/pages/api/graphql.js" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/seed-node/pages/api/graphql.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpers/seed-node/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/seed-node/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,8 +59,8 @@
     <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/app/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -110,7 +101,7 @@
       <workItem from="1615698922261" duration="2809000" />
       <workItem from="1615721970602" duration="3729000" />
       <workItem from="1615779229097" duration="5935000" />
-      <workItem from="1615810969594" duration="2766000" />
+      <workItem from="1615810969594" duration="6309000" />
     </task>
     <task id="LOCAL-00001" summary="Created a getBlock from doc function ,added type descriptions to all functions in block chain class. and did descending order for get last blcok instead of ascending.">
       <created>1615646220707</created>
