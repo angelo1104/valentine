@@ -87,8 +87,13 @@ const typeDefs = gql`
     lastBlock: Block!
   }
 
+  input RemoveNodeInput {
+    address: String!
+  }
+
   type Mutation {
     addNode(input: NodeInput!): Node!
+    removeNode(input: RemoveNodeInput!): Node!
   }
 `;
 
@@ -112,6 +117,17 @@ const resolvers = {
         address: nodeDoc?.address,
         length: nodeDoc?.length,
         lastBlock: nodeDoc?.lastBlock,
+      };
+    },
+    removeNode: async (_, { input: { address } }) => {
+      const removed = await Node.findOneAndDelete({ address }).exec();
+
+      if (!removed) throw new Error("No such node found with such address.");
+
+      return {
+        address: removed?.address,
+        length: removed?.length,
+        lastBlock: removed?.lastBlock,
       };
     },
   },
