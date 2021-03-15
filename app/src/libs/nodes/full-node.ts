@@ -31,6 +31,7 @@ class FullNode extends Node {
 
   start(port = 4000, mongoDbUrl: string) {
     this.startServer(port, mongoDbUrl);
+    console.log("presence, presence, presence", this?.presence?.members);
   }
 }
 

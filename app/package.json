@@ -6,7 +6,7 @@
   "type": "commonjs",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev src/app.ts",
+    "dev": "ts-node-dev --rs src/app.ts",
     "start": "node build/app.js",
     "build": "./node_modules/.bin/tsc",
     "lint": "eslint src",
@@ -44,6 +44,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^5.11.19",
     "object-sizeof": "^1.6.1",
+    "pusher-js": "^7.0.3",
     "socket.io": "^4.0.0",
     "socket.io-client": "^4.0.0",
     "socket.io-stream": "^0.9.1"

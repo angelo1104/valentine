@@ -5,6 +5,7 @@ import mongoose, { Connection } from "mongoose";
 import * as http from "http";
 import socket, { Socket } from "socket.io";
 import { BlockInterface } from "../block";
+import pusher, { Pusher } from "../pusher/pusher";
 
 // eslint-disable-next-line no-shadow
 enum NodeTypes {
@@ -36,6 +37,8 @@ class Node {
   protected readonly io: Socket;
 
   protected readonly sockets: any[];
+
+  protected presence: Pusher.PresenceChannel | undefined;
 
   constructor(type: NodeTypes, typeDefs: any, resolvers: any) {
     this.type = type;
@@ -86,6 +89,10 @@ class Node {
         this.sockets.splice(index, 1);
       });
     });
+
+    this.presence = pusher.subscribe(
+      "presence-nodes",
+    ) as Pusher.PresenceChannel;
   }
 
   connectToMongodb(url: string) {
