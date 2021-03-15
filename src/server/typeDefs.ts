@@ -7,6 +7,7 @@ const typeDefs = gql`
     me: String!
     verifyChain: Boolean!
     basicInfo: BasicInfo!
+    paginateChain(input: PaginateChainInput!): PaginateChain!
   }
 
   type Mutation {

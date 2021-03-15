@@ -1,6 +1,6 @@
 import GraphQLJSON from "graphql-type-json";
 import lodash from "lodash";
-import blockChainResolvers from "./BlockChainResolvers";
+import blockChainResolvers from "./FullChainResolvers";
 import BlockChain from "../libs/block-chain";
 
 interface Context {

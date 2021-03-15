@@ -1,4 +1,6 @@
 import { ApolloServer } from "apollo-server-express";
+// @ts-ignore
+import ss from "socket.io-stream";
 import Node, { NodeTypes } from "./node";
 import BlockChain from "../block-chain";
 
@@ -29,8 +31,6 @@ class FullNode extends Node {
 
   start(port = 4000, mongoDbUrl: string) {
     this.startServer(port, mongoDbUrl);
-
-    this.app.get("/info-blockchain", (req, res) => {});
   }
 }
 
