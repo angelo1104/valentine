@@ -1,6 +1,10 @@
-import { ApolloServer, gql } from "apollo-server-micro";
-import mongoose, { Schema } from "mongoose";
+import { ApolloServer, gql, UserInputError } from "apollo-server-micro";
+import mongoose  from "mongoose";
 import { GraphQLJSONObject } from "graphql-type-json";
+import dns from "dns"
+import AuthorizedIPDirective from "../../src/directives";
+
+const dnsPromises = dns.promises
 
 mongoose
   .connect(process.env.MONGODB_URL, {
@@ -11,7 +15,6 @@ mongoose
   .then(() => console.log("Connected to mongo db"))
   .catch((err) => console.log(`Error in mongo db ${err}`));
 
-// TODO: replace schema
 
 const NodeSchema = new mongoose.Schema({
   address: {
@@ -32,6 +35,7 @@ const Node = mongoose.models.Nodes || mongoose.model("Nodes", NodeSchema);
 
 const typeDefs = gql`
   scalar JSON
+  directive @authorizedIP on FIELD_DEFINITION
 
   enum NodeType {
     FULL_NODE
@@ -72,6 +76,7 @@ const typeDefs = gql`
     address: String!
     length: Int!
     type: NodeType!
+    lastConnected: String!
   }
 
   input RemoveNodeInput {
@@ -79,23 +84,31 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addNode(input: NodeInput!): Node!
-    removeNode(input: RemoveNodeInput!): Node!
+    addNode(input: NodeInput!): Node! @authorizedIP
+    removeNode(input: RemoveNodeInput!): Node! @authorizedIP
   }
 `;
 
 const resolvers = {
   JSON: GraphQLJSONObject,
   Query: {
-    me: () => "Hello hello hello seed node kiyosaki here.",
+    me: (req) => {
+      console.log("reqer", req)
+      return "Hello hello hello seed node kiyosaki here."
+    } ,
   },
   Mutation: {
-    addNode: async (_, { input: { address, length, type } }) => {
+    addNode: async (_, { input: { address, length, type } }, context) => {
       const node = new Node({
         address,
         length,
         type,
       });
+
+      const found = await Node.findOne({address}).exec()
+
+      // if the node exists
+      if (found) throw new UserInputError("The node is already in the list.")
 
       const nodeDoc = await node.save();
 
@@ -122,6 +135,10 @@ const resolvers = {
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  context: req=> ({...req}),
+  schemaDirectives: {
+    authorizedIP: AuthorizedIPDirective
+  }
 });
 
 export default apolloServer.createHandler({ path: "/api/graphql" });
