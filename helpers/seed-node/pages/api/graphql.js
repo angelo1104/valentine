@@ -28,6 +28,10 @@ const NodeSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  lastConnected: {
+    required: true,
+    type: String,
+  },
 });
 
 const Node = mongoose.models.Nodes || mongoose.model("Nodes", NodeSchema);
@@ -98,10 +102,13 @@ const resolvers = {
   },
   Mutation: {
     addNode: async (_, { input: { address, length, type } }, context) => {
+      const time = new Date().getTime();
+
       const node = new Node({
         address,
         length,
         type,
+        lastConnected: time.toString(),
       });
 
       const found = await Node.findOne({ address }).exec();
@@ -115,6 +122,7 @@ const resolvers = {
         address: nodeDoc?.address,
         length: nodeDoc?.length,
         type: nodeDoc?.type,
+        lastConnected: nodeDoc?.lastConnected,
       };
     },
     removeNode: async (_, { input: { address } }) => {
@@ -126,6 +134,7 @@ const resolvers = {
         address: removed?.address,
         length: removed?.length,
         type: removed?.type,
+        lastConnected: removed?.lastConnected,
       };
     },
   },
