@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { GraphQLJSONObject } from "graphql-type-json";
 import dns from "dns";
 import AuthorizedIPDirective from "../../src/directives";
+import getLengthOfChain from "../../src/utils/getLengthOfCollection";
 
 const dnsPromises = dns.promises;
 
@@ -47,10 +48,6 @@ const typeDefs = gql`
     WALLET
   }
 
-  type Query {
-    me: String!
-  }
-
   type Block {
     index: Int!
     data: JSON!
@@ -86,6 +83,15 @@ const typeDefs = gql`
     address: String!
   }
 
+  input GetTopNodesInput {
+    type: NodeType!
+  }
+
+  type Query {
+    me: String!
+    getTopNodes(input: GetTopNodesInput!): [Node]!
+  }
+
   type Mutation {
     addNode(input: NodeInput!): Node! @authorizedIP
     removeNode(input: RemoveNodeInput!): Node! @authorizedIP
@@ -98,6 +104,30 @@ const resolvers = {
     me: (req) => {
       console.log("reqer", req);
       return "Hello hello hello seed node kiyosaki here.";
+    },
+    getTopNodes: async (_, { input: { type } }) => {
+      // no need of try catch it just all works with graphql
+      const lengthOfNodes = await getLengthOfChain(Node);
+      // the longest active node will be first that is descending order.
+
+      let skip = 0;
+
+      if (lengthOfNodes > 20) {
+        // no. of nodes is some good number
+        skip = lengthOfNodes / 5;
+      }
+
+      const nodes = await Node.find({
+        type,
+      })
+        .sort({
+          lastConnected: "descending",
+        })
+        .skip(skip)
+        .limit(10)
+        .exec();
+
+      return nodes;
     },
   },
   Mutation: {
