@@ -1,10 +1,10 @@
 import { ApolloServer, gql, UserInputError } from "apollo-server-micro";
-import mongoose  from "mongoose";
+import mongoose from "mongoose";
 import { GraphQLJSONObject } from "graphql-type-json";
-import dns from "dns"
+import dns from "dns";
 import AuthorizedIPDirective from "../../src/directives";
 
-const dnsPromises = dns.promises
+const dnsPromises = dns.promises;
 
 mongoose
   .connect(process.env.MONGODB_URL, {
@@ -14,7 +14,6 @@ mongoose
   })
   .then(() => console.log("Connected to mongo db"))
   .catch((err) => console.log(`Error in mongo db ${err}`));
-
 
 const NodeSchema = new mongoose.Schema({
   address: {
@@ -27,8 +26,8 @@ const NodeSchema = new mongoose.Schema({
   },
   type: {
     required: true,
-    type: String
-  }
+    type: String,
+  },
 });
 
 const Node = mongoose.models.Nodes || mongoose.model("Nodes", NodeSchema);
@@ -43,7 +42,7 @@ const typeDefs = gql`
     MINER
     WALLET
   }
-  
+
   type Query {
     me: String!
   }
@@ -93,9 +92,9 @@ const resolvers = {
   JSON: GraphQLJSONObject,
   Query: {
     me: (req) => {
-      console.log("reqer", req)
-      return "Hello hello hello seed node kiyosaki here."
-    } ,
+      console.log("reqer", req);
+      return "Hello hello hello seed node kiyosaki here.";
+    },
   },
   Mutation: {
     addNode: async (_, { input: { address, length, type } }, context) => {
@@ -105,10 +104,10 @@ const resolvers = {
         type,
       });
 
-      const found = await Node.findOne({address}).exec()
+      const found = await Node.findOne({ address }).exec();
 
       // if the node exists
-      if (found) throw new UserInputError("The node is already in the list.")
+      if (found) throw new UserInputError("The node is already in the list.");
 
       const nodeDoc = await node.save();
 
@@ -135,10 +134,10 @@ const resolvers = {
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  context: req=> ({...req}),
+  context: (req) => ({ ...req }),
   schemaDirectives: {
-    authorizedIP: AuthorizedIPDirective
-  }
+    authorizedIP: AuthorizedIPDirective,
+  },
 });
 
 export default apolloServer.createHandler({ path: "/api/graphql" });

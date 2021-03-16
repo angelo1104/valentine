@@ -3,6 +3,9 @@ import { ApolloServer } from "apollo-server-express";
 import ss from "socket.io-stream";
 import Node, { NodeTypes } from "./node";
 import BlockChain from "../block-chain";
+import publicIp from "public-ip";
+import client from "../../apollo-client/client";
+import { ADD_NODE } from "../../apollo-client/Queries";
 
 class FullNode extends Node {
   private readonly blockChain: BlockChain;
@@ -29,9 +32,28 @@ class FullNode extends Node {
     });
   }
 
-  start(port = 4000, mongoDbUrl: string) {
+  async start(port = 4000, mongoDbUrl: string) {
     this.startServer(port, mongoDbUrl);
-    console.log("presence, presence, presence", this?.presence?.members);
+
+    const externalIp = await publicIp.v4();
+    const externalUrl = new URL(`http://${externalIp}:${port}`);
+
+    try {
+      const result = await client.mutate({
+        mutation: ADD_NODE,
+        variables: {
+          nodeInput: {
+            address: `${externalUrl.origin}`,
+            length: 3,
+            type: "FULL_NODE",
+          },
+        },
+      });
+
+      console.log("successfully connected to the seed node");
+    } catch (e) {
+      console.log("error", e);
+    }
   }
 }
 
