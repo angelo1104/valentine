@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f60b88a-dc83-4bca-9b8a-32e337ca5792" name="Default Changelist" comment="Made sure that the loop breaks if the block chain is found invalid at any point no memory resources wasted.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/valentine.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/helpers/seed-node/pages/api/graphql.js" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/seed-node/pages/api/graphql.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,6 +30,10 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/helpers/seed-node/pages/api/graphql.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/src/libs/nodes/full-node.ts" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectId" id="1pLEeKQkUHvqV5D2aWbs1AKbXgA" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -44,20 +49,20 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.linters.configure.manually.selectedeslint" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../next-init" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/helpers/seed-node" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.standard" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/app/node_modules/eslint" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/app/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
-    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -97,7 +102,13 @@
       <workItem from="1615698922261" duration="2809000" />
       <workItem from="1615721970602" duration="3729000" />
       <workItem from="1615779229097" duration="5935000" />
-      <workItem from="1615810969594" duration="7420000" />
+      <workItem from="1615810969594" duration="7489000" />
+      <workItem from="1615870999442" duration="163000" />
+      <workItem from="1615871209443" duration="128000" />
+      <workItem from="1615871411460" duration="223000" />
+      <workItem from="1615871667834" duration="263000" />
+      <workItem from="1615871981679" duration="198000" />
+      <workItem from="1615872307857" duration="36000" />
     </task>
     <task id="LOCAL-00001" summary="Created a getBlock from doc function ,added type descriptions to all functions in block chain class. and did descending order for get last blcok instead of ascending.">
       <created>1615646220707</created>

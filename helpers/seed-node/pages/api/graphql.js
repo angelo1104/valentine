@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import mongoose, { Schema } from "mongoose";
-import GraphQLJSON, { GraphQLJSONObject } from "graphql-type-json";
+import { GraphQLJSONObject } from "graphql-type-json";
 
 mongoose
   .connect(process.env.MONGODB_URL, {
@@ -11,6 +11,8 @@ mongoose
   .then(() => console.log("Connected to mongo db"))
   .catch((err) => console.log(`Error in mongo db ${err}`));
 
+// TODO: replace schema
+
 const NodeSchema = new mongoose.Schema({
   address: {
     required: true,
@@ -20,32 +22,10 @@ const NodeSchema = new mongoose.Schema({
     required: true,
     type: Number,
   },
-  lastBlock: {
-    index: {
-      required: true,
-      type: Number,
-    },
-    data: {
-      required: true,
-      type: Schema.Types.Mixed,
-    },
-    nonce: {
-      required: true,
-      type: Number,
-    },
-    timestamp: {
-      required: true,
-      type: Number,
-    },
-    prevHash: {
-      required: true,
-      type: String,
-    },
-    difficulty: {
-      required: true,
-      type: Number,
-    },
-  },
+  type: {
+    required: true,
+    type: String
+  }
 });
 
 const Node = mongoose.models.Nodes || mongoose.model("Nodes", NodeSchema);
@@ -53,6 +33,13 @@ const Node = mongoose.models.Nodes || mongoose.model("Nodes", NodeSchema);
 const typeDefs = gql`
   scalar JSON
 
+  enum NodeType {
+    FULL_NODE
+    LIGHT_NODE
+    MINER
+    WALLET
+  }
+  
   type Query {
     me: String!
   }
@@ -78,13 +65,13 @@ const typeDefs = gql`
   input NodeInput {
     address: String!
     length: Int!
-    lastBlock: BlockInput!
+    type: NodeType!
   }
 
   type Node {
     address: String!
     length: Int!
-    lastBlock: Block!
+    type: NodeType!
   }
 
   input RemoveNodeInput {
@@ -103,20 +90,19 @@ const resolvers = {
     me: () => "Hello hello hello seed node kiyosaki here.",
   },
   Mutation: {
-    addNode: async (_, { input: { address, length, lastBlock } }) => {
+    addNode: async (_, { input: { address, length, type } }) => {
       const node = new Node({
         address,
         length,
-        lastBlock,
+        type,
       });
 
       const nodeDoc = await node.save();
 
-      console.log(nodeDoc);
       return {
         address: nodeDoc?.address,
         length: nodeDoc?.length,
-        lastBlock: nodeDoc?.lastBlock,
+        type: nodeDoc?.type,
       };
     },
     removeNode: async (_, { input: { address } }) => {
@@ -127,7 +113,7 @@ const resolvers = {
       return {
         address: removed?.address,
         length: removed?.length,
-        lastBlock: removed?.lastBlock,
+        type: removed?.type,
       };
     },
   },
