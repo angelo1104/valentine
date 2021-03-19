@@ -1,29 +1,19 @@
 import { Block } from "./block";
-import range from "../utils/range";
 import BlockModel from "./mongodb/BlockModel";
 import hash from "../utils/hash";
 import getBlockFromDoc from "../utils/getBlockFromDoc";
 import loopThroughEachDoc from "../utils/loopThroughEachDoc";
 import getLengthOfChain from "../utils/getLengthOfCollection";
+import genesisBlock from "../utils/genesisBlock";
 
 class BlockChain {
-  async createGenesis(data: any) {
+  async createGenesis() {
     try {
       // check if the chain contains genesis
       const lastBlock = await this.getLastBlock();
       if (!lastBlock) {
-        const genesisBlock = new Block({
-          timestamp: new Date().getTime(),
-          prevHash: range(64)
-            .map(() => "0")
-            .join(""),
-          nonce: 0,
-          index: 1,
-          data,
-          difficulty: 1,
-        });
-
-        this.addBlock(genesisBlock, true);
+        await this.addBlock(genesisBlock, true);
+        console.log("Created genesis block.");
       } else {
         console.log("Genesis exists");
       }

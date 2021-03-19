@@ -6,6 +6,7 @@ import FullNode from "./libs/nodes/full-node";
 import publicIp from "public-ip";
 import client from "./apollo-client/client";
 import { REMOVE_NODE } from "./apollo-client/Queries";
+import { randomInt } from "crypto";
 
 // initialize environment variables
 dotenv.config();
@@ -14,7 +15,9 @@ dotenv.config();
 const port = process.env.PORT || "4000";
 const node = new FullNode(NodeTypes.FULL, typeDefs, resolvers);
 
-node.start(parseInt(port, 10), process.env.MONGODB_URL || "");
+const randomNumber = randomInt(0, 50);
+
+node.start(parseInt(port, 10) + randomNumber, process.env.MONGODB_URL || "");
 
 // clean-up
 process.stdin.resume(); //so the program will not close instantly
@@ -22,10 +25,12 @@ process.stdin.resume(); //so the program will not close instantly
 async function exitHandler(options: any, exitCode: any) {
   // clean here
   const externalIp = await publicIp.v4();
-  const externalUrl = new URL(`http://${externalIp}:${port}`);
+  const externalUrl = new URL(
+    `http://${externalIp}:${parseInt(port, 10) + randomNumber}`,
+  );
 
   try {
-    const result = await client.mutate({
+    await client.mutate({
       mutation: REMOVE_NODE,
       variables: {
         address: externalUrl.origin,

@@ -94,7 +94,7 @@ class Node {
       {
         useUnifiedTopology: true,
         useNewUrlParser: true,
-        useFindAndModify: true,
+        useFindAndModify: false,
       },
       (err) => {
         if (err) console.log(`Error in mongo db ${err}}`);

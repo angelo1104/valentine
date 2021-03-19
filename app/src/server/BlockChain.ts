@@ -12,7 +12,7 @@ const typeDefs = gql`
     lastBlock: Block
   }
 
-  input PaginateChainInput {
+  input PaginateInput {
     page: Int!
   }
 
