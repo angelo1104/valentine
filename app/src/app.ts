@@ -4,7 +4,7 @@ import typeDefs from "./server/typeDefs";
 import resolvers from "./server/resolvers";
 import FullNode from "./libs/nodes/full-node";
 import publicIp from "public-ip";
-import client from "./apollo-client/client";
+import seedNodeClient from "./apollo-client/seedNodeClient";
 import { REMOVE_NODE } from "./apollo-client/Queries";
 import { randomInt } from "crypto";
 
@@ -30,7 +30,7 @@ async function exitHandler(options: any, exitCode: any) {
   );
 
   try {
-    await client.mutate({
+    await seedNodeClient.mutate({
       mutation: REMOVE_NODE,
       variables: {
         address: externalUrl.origin,

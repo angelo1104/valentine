@@ -4,6 +4,7 @@ import { GraphQLJSONObject } from "graphql-type-json";
 import dns from "dns";
 import AuthorizedIPDirective from "../../src/directives";
 import getLengthOfChain from "../../src/utils/getLengthOfCollection";
+import crypto from "crypto";
 
 const dnsPromises = dns.promises;
 
@@ -110,12 +111,7 @@ const resolvers = {
       const lengthOfNodes = await getLengthOfChain(Node);
       // the longest active node will be first that is descending order.
 
-      let skip = 0;
-
-      if (lengthOfNodes > 20) {
-        // no. of nodes is some good number
-        skip = lengthOfNodes / 5;
-      }
+      let skip = crypto.randomInt(0, lengthOfNodes - 10);
 
       const nodes = await Node.find({
         type,

@@ -20,7 +20,6 @@ const typeDefs = gql`
     address: String!
     type: NodeType!
     length: Int!
-    lastBlock: Block!
     lastConnected: Float!
   }
 `;

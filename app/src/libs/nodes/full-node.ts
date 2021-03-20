@@ -1,14 +1,22 @@
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, gql } from "apollo-server-express";
 // @ts-ignore
 import ss from "socket.io-stream";
 import Node, { NodeTypes } from "./node";
 import BlockChain from "../block-chain";
 import publicIp from "public-ip";
-import client from "../../apollo-client/client";
-import { ADD_NODE, GET_TOP_NODES } from "../../apollo-client/Queries";
+import seedNodeClient from "../../apollo-client/seedNodeClient";
+import {
+  ADD_NODE,
+  GET_TOP_NODES,
+  PAGINATE_NODES,
+} from "../../apollo-client/Queries";
 import NodeModel from "../mongodb/NodeModel";
 import genesisBlock from "../../utils/genesisBlock";
 import _ from "lodash";
+import request from "graphql-request";
+import { print } from "graphql";
+import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import fetch from "cross-fetch";
 
 class FullNode extends Node {
   private readonly blockChain: BlockChain;
@@ -36,12 +44,12 @@ class FullNode extends Node {
   async start(port = 4000, mongoDbUrl: string) {
     this.startServer(port, mongoDbUrl);
 
-    const externalIp = await publicIp.v4();
+    const externalIp = "http://localhost"; // await publicIp.v4();
     const externalUrl = new URL(`http://${externalIp}:${port}`);
 
     try {
       try {
-        await client.mutate({
+        await seedNodeClient.mutate({
           mutation: ADD_NODE,
           variables: {
             nodeInput: {
@@ -53,6 +61,7 @@ class FullNode extends Node {
         });
       } catch (e) {}
 
+      const lastBlock = await this.blockChain.getLastBlock();
       await NodeModel.findOneAndUpdate(
         {
           address: externalUrl.origin,
@@ -62,7 +71,7 @@ class FullNode extends Node {
             address: externalUrl.origin,
             type: "FULL_NODE",
             length: 1,
-            lastBlock: genesisBlock.getBlock(),
+            lastBlock: lastBlock?.getBlock(),
             lastConnected: Date.now(),
           },
         },
@@ -88,7 +97,7 @@ class FullNode extends Node {
 
       const {
         data: { topNodes },
-      }: TopNodes = await client.query({
+      }: TopNodes = await seedNodeClient.query({
         query: GET_TOP_NODES,
         variables: {
           type: "FULL_NODE",
@@ -101,13 +110,36 @@ class FullNode extends Node {
           if (node.address !== externalUrl.origin) return node;
         });
 
-        // for (let node of allNodesExceptMe){
-        //   try {
-        //     const nodes = await
-        //   }catch (e) {
-        //
-        //   }
-        // }
+        console.log("alley", allNodesExceptMe);
+
+        for (let node of allNodesExceptMe) {
+          try {
+            const bulk = NodeModel.collection.initializeOrderedBulkOp();
+
+            console.log("noder", node.address);
+
+            const client = new ApolloClient({
+              link: createHttpLink({
+                uri: node.address,
+                fetch,
+              }),
+              cache: new InMemoryCache(),
+            });
+
+            const nodes = await client.query({
+              query: PAGINATE_NODES,
+              variables: {
+                paginateInput: {
+                  page: 1,
+                },
+              },
+            });
+
+            console.log("nodes", node, nodes);
+          } catch (e) {
+            console.log("perrorororo", e);
+          }
+        }
       }
 
       console.log("successfully connected to the seed node");
