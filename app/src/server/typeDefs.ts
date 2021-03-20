@@ -9,7 +9,6 @@ const typeDefs = gql`
     verifyChain: Boolean!
     basicInfo: BasicInfo!
     paginateChain(input: PaginateInput!): PaginateChain!
-    paginateNodes(input: PaginateInput!): [Node]!
     nodesLength: Int!
     chainLength: Int!
   }

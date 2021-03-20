@@ -111,7 +111,8 @@ const resolvers = {
       const lengthOfNodes = await getLengthOfChain(Node);
       // the longest active node will be first that is descending order.
 
-      let skip = crypto.randomInt(0, lengthOfNodes - 10);
+      let skip =
+        lengthOfNodes > 10 ? crypto.randomInt(0, lengthOfNodes - 10) : 0;
 
       const nodes = await Node.find({
         type,
@@ -150,6 +151,8 @@ const resolvers = {
         type: nodeDoc?.type,
         lastConnected: nodeDoc?.lastConnected,
       };
+
+      console.log("add nodes");
     },
     removeNode: async (_, { input: { address } }) => {
       const removed = await Node.findOneAndDelete({ address }).exec();

@@ -11,12 +11,11 @@ import {
   PAGINATE_NODES,
 } from "../../apollo-client/Queries";
 import NodeModel from "../mongodb/NodeModel";
-import genesisBlock from "../../utils/genesisBlock";
-import _ from "lodash";
-import request from "graphql-request";
-import { print } from "graphql";
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import fetch from "cross-fetch";
+import log from "loglevel";
+import router from "../../server/routes/nodes";
+import axios from "axios";
 
 class FullNode extends Node {
   private readonly blockChain: BlockChain;
@@ -39,15 +38,18 @@ class FullNode extends Node {
 
     this.server = server;
     this.blockChain.createGenesis();
+
+    this.app.use("/nodes", router);
   }
 
   async start(port = 4000, mongoDbUrl: string) {
     this.startServer(port, mongoDbUrl);
 
-    const externalIp = "http://localhost"; // await publicIp.v4();
+    const externalIp = "localhost"; // await publicIp.v4();
     const externalUrl = new URL(`http://${externalIp}:${port}`);
 
     try {
+      // will add more error handling
       try {
         await seedNodeClient.mutate({
           mutation: ADD_NODE,
@@ -59,7 +61,10 @@ class FullNode extends Node {
             },
           },
         });
-      } catch (e) {}
+      } catch (e) {
+        // TODO: REMOVE THIS THROW ERROR ONLY FOR DEV PURPOSES
+        throw e;
+      }
 
       const lastBlock = await this.blockChain.getLastBlock();
       await NodeModel.findOneAndUpdate(
@@ -110,34 +115,21 @@ class FullNode extends Node {
           if (node.address !== externalUrl.origin) return node;
         });
 
-        console.log("alley", allNodesExceptMe);
+        log.info(`alley ${allNodesExceptMe}`);
 
         for (let node of allNodesExceptMe) {
           try {
             const bulk = NodeModel.collection.initializeOrderedBulkOp();
 
-            console.log("noder", node.address);
+            console.info(`noder ${node.address}`);
 
-            const client = new ApolloClient({
-              link: createHttpLink({
-                uri: node.address,
-                fetch,
-              }),
-              cache: new InMemoryCache(),
-            });
+            const nodes = await axios.get(`${node.address}/nodes`);
 
-            const nodes = await client.query({
-              query: PAGINATE_NODES,
-              variables: {
-                paginateInput: {
-                  page: 1,
-                },
-              },
-            });
-
-            console.log("nodes", node, nodes);
+            console.log("nodes", nodes.data.nodes);
+            break;
           } catch (e) {
             console.log("perrorororo", e);
+            continue;
           }
         }
       }

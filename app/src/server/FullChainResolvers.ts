@@ -31,14 +31,6 @@ const resolvers = {
         next: getInfo[1].length - page * NUMBER_PER_PAGE_PAGINATION > 0,
       };
     },
-    paginateNodes: async (_: any, { input: { page } }: any) => {
-      const getNodes = await paginate(
-        NUMBER_PER_PAGE_PAGINATION,
-        page,
-        NodeModel,
-      );
-      return getNodes;
-    },
     nodesLength: async () => await getLengthOfCollection(NodeModel),
     chainLength: async () => await getLengthOfCollection(BlockModel),
   },
