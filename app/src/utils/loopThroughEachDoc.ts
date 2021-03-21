@@ -17,7 +17,7 @@ async function loopThroughEachDoc(
       // eslint-disable-next-line no-await-in-loop
       const doBreak = await callback(getBlockFromDoc(doc));
 
-      if (!doBreak) break;
+      if (doBreak) break;
     } catch (e) {
       throw new Error(e.message);
     }

@@ -31,16 +31,4 @@ const GET_TOP_NODES = gql`
   }
 `;
 
-const PAGINATE_NODES = gql`
-  query paginateNodes($paginateInput: PaginateInput!) {
-    paginateNodes(input: $paginateInput) {
-      address
-      type
-      length
-      lastConnected
-    }
-    nodesLength
-  }
-`;
-
-export { ADD_NODE, REMOVE_NODE, GET_TOP_NODES, PAGINATE_NODES };
+export { ADD_NODE, REMOVE_NODE, GET_TOP_NODES };

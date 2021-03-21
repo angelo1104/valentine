@@ -1,21 +1,27 @@
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 // @ts-ignore
 import ss from "socket.io-stream";
 import Node, { NodeTypes } from "./node";
 import BlockChain from "../block-chain";
 import publicIp from "public-ip";
 import seedNodeClient from "../../apollo-client/seedNodeClient";
-import {
-  ADD_NODE,
-  GET_TOP_NODES,
-  PAGINATE_NODES,
-} from "../../apollo-client/Queries";
+import { ADD_NODE, GET_TOP_NODES } from "../../apollo-client/Queries";
 import NodeModel from "../mongodb/NodeModel";
-import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
-import fetch from "cross-fetch";
-import log from "loglevel";
 import router from "../../server/routes/nodes";
 import axios from "axios";
+
+interface TopNodes {
+  data: {
+    topNodes: [
+      {
+        address: string;
+        length: number;
+        type: string;
+        lastConnected: number;
+      },
+    ];
+  };
+}
 
 class FullNode extends Node {
   private readonly blockChain: BlockChain;
@@ -32,6 +38,7 @@ class FullNode extends Node {
       typeDefs,
       resolvers,
       context: ({ req }) => ({
+        ...req,
         blockChain: this.blockChain,
       }),
     });
@@ -45,61 +52,67 @@ class FullNode extends Node {
   async start(port = 4000, mongoDbUrl: string) {
     this.startServer(port, mongoDbUrl);
 
-    const externalIp = "localhost"; // await publicIp.v4();
-    const externalUrl = new URL(`http://${externalIp}:${port}`);
+    this.syncUp(port);
+  }
 
+  async syncUp(port = 4000) {
     try {
-      // will add more error handling
-      try {
-        await seedNodeClient.mutate({
-          mutation: ADD_NODE,
-          variables: {
-            nodeInput: {
-              address: `${externalUrl.origin}`,
-              length: 3,
-              type: "FULL_NODE",
-            },
-          },
-        });
-      } catch (e) {
-        // TODO: REMOVE THIS THROW ERROR ONLY FOR DEV PURPOSES
-        throw e;
-      }
+      // use localhost in development because it caused ip address issues in syncing up with nodes
+      const externalIp =
+        process.env.NODE_PRODUCTION == "true"
+          ? await publicIp.v4()
+          : "localhost";
+      const externalUrl = new URL(`http://${externalIp}:${port}`);
 
+      await this.connectToSeedNode(externalUrl);
+      await this.setupNodes(externalUrl);
+      // for debugging purposes
+      console.log("successfully connected to the seed node");
+    } catch (e) {
+      console.error("error", e);
+    }
+  }
+
+  async connectToSeedNode(externalUrl: URL) {
+    try {
+      await seedNodeClient.mutate({
+        mutation: ADD_NODE,
+        variables: {
+          nodeInput: {
+            address: `${externalUrl.origin}`,
+            length: 3,
+            type: "FULL_NODE",
+          },
+        },
+      });
+    } catch (e) {
+      // TODO: REMOVE THIS THROW IT IS ONLY FOR DEBUGGING PURPOSES
+      throw e;
+    }
+  }
+
+  async setupNodes(externalUrl: URL) {
+    try {
       const lastBlock = await this.blockChain.getLastBlock();
+
+      // find the node of my address and update it properly.
       await NodeModel.findOneAndUpdate(
         {
           address: externalUrl.origin,
         },
         {
-          $setOnInsert: {
-            address: externalUrl.origin,
-            type: "FULL_NODE",
-            length: 1,
-            lastBlock: lastBlock?.getBlock(),
-            lastConnected: Date.now(),
-          },
+          address: externalUrl.origin,
+          type: "FULL_NODE",
+          length: 1,
+          lastBlock: lastBlock?.getBlock(),
+          lastConnected: Date.now(),
         },
         {
-          returnOriginal: false,
           upsert: true,
         },
       ).exec();
 
-      // retrieve top nodes
-      interface TopNodes {
-        data: {
-          topNodes: [
-            {
-              address: string;
-              length: number;
-              type: string;
-              lastConnected: number;
-            },
-          ];
-        };
-      }
-
+      // get the list of to nodes from seed node
       const {
         data: { topNodes },
       }: TopNodes = await seedNodeClient.query({
@@ -110,33 +123,34 @@ class FullNode extends Node {
       });
 
       if (topNodes.length) {
-        // all things went okay and I got the top nodes
+        // top nodes is valid and its length is not equal to zero
         const allNodesExceptMe = topNodes.filter((node: any) => {
           if (node.address !== externalUrl.origin) return node;
         });
 
-        log.info(`alley ${allNodesExceptMe}`);
+        // loop through using for of loop because for of allows breaking up.
+
+        // initialize ordered bulk for fast read and write ops
+        const bulk = NodeModel.collection.initializeOrderedBulkOp();
 
         for (let node of allNodesExceptMe) {
           try {
-            const bulk = NodeModel.collection.initializeOrderedBulkOp();
-
             console.info(`noder ${node.address}`);
 
-            const nodes = await axios.get(`${node.address}/nodes`);
+            const {
+              data: { nodes },
+            } = await axios.get(`${node.address}/nodes`);
 
-            console.log("nodes", nodes.data.nodes);
+            console.log("nodes", nodes);
             break;
           } catch (e) {
-            console.log("perrorororo", e);
+            console.error("error while working on with nodes", e);
             continue;
           }
         }
       }
-
-      console.log("successfully connected to the seed node");
     } catch (e) {
-      console.log("error", e);
+      console.error("perror", e);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Block } from "./block";
+import { Block, BlockInterface } from "./block";
 import BlockModel from "./mongodb/BlockModel";
 import hash from "../utils/hash";
 import getBlockFromDoc from "../utils/getBlockFromDoc";
@@ -6,8 +6,13 @@ import loopThroughEachDoc from "../utils/loopThroughEachDoc";
 import getLengthOfChain from "../utils/getLengthOfCollection";
 import genesisBlock from "../utils/genesisBlock";
 
+interface BasicInfo {
+  length: number;
+  lastBlock: BlockInterface | undefined;
+}
+
 class BlockChain {
-  async createGenesis() {
+  async createGenesis(): Promise<void> {
     try {
       // check if the chain contains genesis
       const lastBlock = await this.getLastBlock();
@@ -24,8 +29,10 @@ class BlockChain {
 
   // eslint-disable-next-line class-methods-use-this,consistent-return
   async addBlock(block: Block, mine = false): Promise<Block> {
+    const lastBlock = await this.getLastBlock();
+
     // check the blocks legibility
-    if (block.verifyBlock()) {
+    if (block.verifyBlock(lastBlock?.getBlock())) {
       // add block
       const newBlock = new BlockModel({
         ...block.getBlock(),
@@ -61,7 +68,6 @@ class BlockChain {
     }
   }
 
-  // eslint-disable-next-line consistent-return
   async createBlock(data: any, mine = true): Promise<Block | undefined> {
     try {
       const lastBlock: Block | null = await this.getLastBlock();
@@ -76,9 +82,12 @@ class BlockChain {
           difficulty: 1,
         });
 
-        const newBlock = await this.addBlock(block, mine);
-        return newBlock;
+        return await this.addBlock(block, mine);
       }
+
+      throw new Error(
+        "Last block is undefined there is a problem with the chain.",
+      );
     } catch (e) {
       throw new Error(e.message);
     }
@@ -111,34 +120,11 @@ class BlockChain {
       let valid = true;
 
       await loopThroughEachDoc(BlockModel, (block) => {
-        // last block is not null
-        if (lastBlock) {
-          // check if block is mined
-          if (!block.verifyBlock()) {
-            console.log("block is not mined", block, hash(block.getBlock()));
-            valid = false;
-          }
-
-          // check if the previous hash is valid
-          if (hash(lastBlock.getBlock()) !== block.getBlock().prevHash) {
-            console.log(
-              "previous hash is not valid",
-              lastBlock,
-              hash(lastBlock.getBlock()),
-              block,
-            );
-            valid = false;
-          }
-
-          // check if index is valid
-          if (lastBlock.getBlock().index + 1 !== block.getBlock().index) {
-            console.log("index is not valid", lastBlock, block);
-            valid = false;
-          }
-        }
-
+        valid = block.verifyBlock(lastBlock?.getBlock());
         lastBlock = block;
-        return valid;
+
+        // do break should be false if valid is ture and should be true if the chain is not valid
+        return !valid;
       });
 
       return valid;
@@ -147,7 +133,7 @@ class BlockChain {
     }
   }
 
-  async getBasicInfo() {
+  async getBasicInfo(): Promise<BasicInfo> {
     const lengthOfChain = await getLengthOfChain(BlockModel);
     const lastBlock = await this.getLastBlock();
 

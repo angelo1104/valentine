@@ -102,10 +102,7 @@ const typeDefs = gql`
 const resolvers = {
   JSON: GraphQLJSONObject,
   Query: {
-    me: (req) => {
-      console.log("reqer", req);
-      return "Hello hello hello seed node kiyosaki here.";
-    },
+    me: () => "Hello hello hello seed node kiyosaki here.",
     getTopNodes: async (_, { input: { type } }) => {
       // no need of try catch it just all works with graphql
       const lengthOfNodes = await getLengthOfChain(Node);
@@ -151,8 +148,6 @@ const resolvers = {
         type: nodeDoc?.type,
         lastConnected: nodeDoc?.lastConnected,
       };
-
-      console.log("add nodes");
     },
     removeNode: async (_, { input: { address } }) => {
       const removed = await Node.findOneAndDelete({ address }).exec();

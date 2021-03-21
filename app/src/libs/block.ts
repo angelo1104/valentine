@@ -1,6 +1,7 @@
 import sizeof from "object-sizeof";
 import getTime from "../utils/getTime";
 import proofOfWork from "../utils/proofOfWork";
+import hash from "../utils/hash";
 
 interface BlockInterface {
   index: number;
@@ -14,22 +15,24 @@ interface BlockInterface {
 class Block {
   private block: BlockInterface;
 
+  public readonly maxNonce: number;
+
   constructor(block: BlockInterface) {
     this.block = block;
+    this.maxNonce = 4000000000;
   }
 
-  getBlock() {
+  getBlock(): BlockInterface {
     return this.block;
   }
 
   mine(): BlockInterface {
     console.log("mining..mine the mine");
-    const maxNonce = 4000000000;
     let previousTime = getTime();
     let mined = false;
 
     while (!mined) {
-      for (let nonce = 0; nonce <= maxNonce; nonce += 1) {
+      for (let nonce = 0; nonce <= this.maxNonce; nonce += 1) {
         const currentTime = getTime();
 
         // time changed
@@ -62,16 +65,25 @@ class Block {
     return this.block;
   }
 
-  verifyBlock() {
-    if (!proofOfWork(this.block, this.block.difficulty)) return false;
+  verifyBlock(lastBlock?: BlockInterface | undefined): boolean {
+    const verifyIndividualBlock = (): boolean => {
+      if (!proofOfWork(this.block, this.block.difficulty)) return false;
 
-    const maxNonce = 4000000000;
-    if (this.block.nonce > maxNonce || this.block.nonce < 0) return false;
+      if (this.block.nonce > this.maxNonce || this.block.nonce < 0)
+        return false;
 
-    // if size fo block is less than 1mb or 1 million bytes
-    if (sizeof(this.block) > 1000000) return false;
+      // if size of block is more than 1mb or 1 million bytes
+      return sizeof(this.block) <= 1000000;
+    };
 
-    return true;
+    if (lastBlock) {
+      // there is last block
+      if (lastBlock.index + 1 !== this.block.index) return false;
+
+      if (hash(lastBlock) !== this.block.prevHash) return false;
+    }
+
+    return verifyIndividualBlock();
   }
 }
 
