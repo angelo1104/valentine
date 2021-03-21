@@ -7,7 +7,7 @@ type BlockLoopCallback = (block: Block) => boolean;
 async function loopThroughEachDoc(
   Model: mongoose.Model<any>,
   callback: BlockLoopCallback,
-) {
+): Promise<void> {
   // create a cursor
   const cursor = Model.find().cursor();
 

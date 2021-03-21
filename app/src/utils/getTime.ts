@@ -1,6 +1,6 @@
 function getTime(): number {
-  const seconds = Math.floor(new Date().getTime() / 1000);
-  return seconds;
+  // get the current unix time in seconds NO MILLISECONDS
+  return Math.floor(new Date().getTime() / 1000);
 }
 
 export default getTime;

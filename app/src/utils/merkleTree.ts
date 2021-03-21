@@ -1,7 +1,7 @@
 import hash from "./hash";
 
 const MerkleTree = {
-  generateMerkleTree(data: any[]) {
+  generateMerkleTree(data: any[]): string {
     const root = [];
     root.unshift(data);
     root.unshift(data.map((t) => t.hash));
@@ -19,10 +19,8 @@ const MerkleTree = {
 
     return root[0][0];
   },
-  verifyRoot(root: string, data: any[]) {
-    if (root === this.generateMerkleTree(data)) return true;
-
-    return false;
+  verifyRoot(root: string, data: any[]): boolean {
+    return root === this.generateMerkleTree(data);
   },
 };
 

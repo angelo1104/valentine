@@ -30,7 +30,11 @@ class Node {
 
   protected readonly sockets: any[];
 
-  constructor(type: NodeTypes, typeDefs: DocumentNode, resolvers: any) {
+  constructor(
+    type: NodeTypes,
+    typeDefs: DocumentNode | DocumentNode[],
+    resolvers: any,
+  ) {
     this.type = type;
     this.app = express();
     this.sockets = [];

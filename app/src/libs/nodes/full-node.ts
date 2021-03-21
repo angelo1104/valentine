@@ -27,7 +27,7 @@ class FullNode extends Node {
 
   constructor(
     public type: NodeTypes,
-    private typeDefs: DocumentNode,
+    private typeDefs: DocumentNode | DocumentNode[],
     private resolvers: any,
   ) {
     super(type, typeDefs, resolvers);

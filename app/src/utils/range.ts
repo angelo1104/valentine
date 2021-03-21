@@ -1,5 +1,4 @@
-function range(x: number): Array<number> {
-  return Array.from({ length: x }, (a, i) => i);
-}
+const range = (x: number): Array<number> =>
+  Array.from({ length: x }, (a, index) => index);
 
 export default range;

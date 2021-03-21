@@ -4,8 +4,7 @@ const getLengthOfChain = async (
   Model: mongoose.Model<any>,
 ): Promise<number> => {
   try {
-    const count = await Model.countDocuments().exec();
-    return count;
+    return await Model.countDocuments().exec();
   } catch (e) {
     throw new Error(e.message);
   }

@@ -9,11 +9,8 @@ const proofOfWork = (block: BlockInterface, difficulty: number): boolean => {
     .map(() => "0")
     .join("");
 
-  // substr uses length instead of end value read more on google for difference
-
-  if (blockHash.substr(0, difficulty) === puzzleZeroes) return true;
-
-  return false;
+  // substr uses length instead of end value read more on google for difference NO substring
+  return blockHash.substr(0, difficulty) === puzzleZeroes;
 };
 
 export default proofOfWork;

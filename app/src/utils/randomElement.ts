@@ -1,2 +1,2 @@
-export default (array: Array<any>) =>
+export default (array: Array<any>): any =>
   array[Math.floor(Math.random() * array.length)];
