@@ -9,16 +9,16 @@ import { ADD_NODE, GET_TOP_NODES } from "../../apollo-client/Queries";
 import NodeModel from "../mongodb/NodeModel";
 import router from "../../server/routes/nodes";
 
+interface NodeInterface {
+  address: string;
+  length: number;
+  type: string;
+  lastConnected: number;
+}
+
 interface TopNodes {
   data: {
-    topNodes: [
-      {
-        address: string;
-        length: number;
-        type: string;
-        lastConnected: number;
-      },
-    ];
+    topNodes: NodeInterface[];
   };
 }
 
@@ -124,10 +124,14 @@ class FullNode extends Node {
 
       if (topNodes.length) {
         // top nodes is valid and its length is not equal to zero
-        // eslint-disable-next-line array-callback-return,consistent-return
-        const allNodesExceptMe = topNodes.filter((node: any) => {
-          if (node.address !== externalUrl.origin) return node;
-        });
+        const filterNodesForMe = (nodes: NodeInterface[]) => {
+          // eslint-disable-next-line array-callback-return,consistent-return
+          return nodes.filter((node) => {
+            if (node.address !== externalUrl.origin) return node;
+          });
+        };
+
+        const allNodesExceptMe = filterNodesForMe(topNodes);
 
         // initialize ordered bulk for fast read and write ops
         const bulk = NodeModel.collection.initializeOrderedBulkOp();
@@ -143,8 +147,26 @@ class FullNode extends Node {
               // eslint-disable-next-line no-await-in-loop
             } = await axios.get(`${node.address}/nodes`);
 
-            console.log("nodes", nodes);
-            break;
+            const newNodesExceptMe = filterNodesForMe(nodes);
+
+            bulk
+              .find({
+                address: { $ne: externalUrl.origin },
+              })
+              .delete();
+
+            newNodesExceptMe.forEach((newNode: NodeInterface) => {
+              bulk.insert({
+                ...newNode,
+              });
+            });
+
+            if (newNodesExceptMe.length) {
+              // eslint-disable-next-line no-await-in-loop
+              await bulk.execute();
+              console.log("nodes", newNodesExceptMe, externalUrl.origin);
+              break;
+            }
           } catch (e) {
             console.error("error while working on with nodes", e);
           }

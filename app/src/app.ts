@@ -15,7 +15,7 @@ dotenv.config();
 const port = process.env.PORT || "4000";
 const node = new FullNode(NodeTypes.FULL, typeDefs, resolvers);
 
-const randomNumber = 0; // randomInt(0, 50);
+const randomNumber = randomInt(0, 50);
 
 node.start(parseInt(port, 10) + randomNumber, process.env.MONGODB_URL || "");
 
@@ -24,7 +24,9 @@ process.stdin.resume(); // so the program will not close instantly
 
 async function exitHandler(options: any, exitCode: any) {
   // clean here
-  const externalIp = await publicIp.v4();
+
+  const externalIp = // eslint-disable-next-line eqeqeq
+    process.env.NODE_PRODUCTION == "true" ? await publicIp.v4() : "localhost";
   const externalUrl = new URL(
     `http://${externalIp}:${parseInt(port, 10) + randomNumber}`,
   );
@@ -38,7 +40,10 @@ async function exitHandler(options: any, exitCode: any) {
     });
     console.log("successfully-exited");
   } catch (e) {
-    console.log("can't exit successfully. Unable to disconnect from seed node");
+    console.log(
+      "can't exit successfully. Unable to disconnect from seed node",
+      e,
+    );
   }
   if (exitCode || exitCode === 0) console.log(exitCode);
   if (options.exit) process.exit();
