@@ -1,14 +1,15 @@
 import { ApolloServer } from "apollo-server-express";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import ss from "socket.io-stream";
+import publicIp from "public-ip";
+import axios from "axios";
 import Node, { NodeTypes } from "./node";
 import BlockChain from "../block-chain";
-import publicIp from "public-ip";
 import seedNodeClient from "../../apollo-client/seedNodeClient";
 import { ADD_NODE, GET_TOP_NODES } from "../../apollo-client/Queries";
 import NodeModel from "../mongodb/NodeModel";
 import router from "../../server/routes/nodes";
-import axios from "axios";
 
 interface TopNodes {
   data: {
@@ -59,6 +60,7 @@ class FullNode extends Node {
     try {
       // use localhost in development because it caused ip address issues in syncing up with nodes
       const externalIp =
+        // eslint-disable-next-line eqeqeq
         process.env.NODE_PRODUCTION == "true"
           ? await publicIp.v4()
           : "localhost";
@@ -73,6 +75,7 @@ class FullNode extends Node {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async connectToSeedNode(externalUrl: URL) {
     try {
       await seedNodeClient.mutate({
@@ -87,7 +90,7 @@ class FullNode extends Node {
       });
     } catch (e) {
       // TODO: REMOVE THIS THROW IT IS ONLY FOR DEBUGGING PURPOSES
-      throw e;
+      throw new Error(e.message);
     }
   }
 
@@ -124,28 +127,29 @@ class FullNode extends Node {
 
       if (topNodes.length) {
         // top nodes is valid and its length is not equal to zero
+        // eslint-disable-next-line array-callback-return,consistent-return
         const allNodesExceptMe = topNodes.filter((node: any) => {
           if (node.address !== externalUrl.origin) return node;
         });
 
-        // loop through using for of loop because for of allows breaking up.
-
         // initialize ordered bulk for fast read and write ops
         const bulk = NodeModel.collection.initializeOrderedBulkOp();
 
-        for (let node of allNodesExceptMe) {
+        // loop through using for of loop because for of allows breaking up.
+        // eslint-disable-next-line no-restricted-syntax
+        for (const node of allNodesExceptMe) {
           try {
             console.info(`noder ${node.address}`);
 
             const {
               data: { nodes },
+              // eslint-disable-next-line no-await-in-loop
             } = await axios.get(`${node.address}/nodes`);
 
             console.log("nodes", nodes);
             break;
           } catch (e) {
             console.error("error while working on with nodes", e);
-            continue;
           }
         }
       }

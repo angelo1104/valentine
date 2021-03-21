@@ -7,7 +7,7 @@ const typeDefs = gql`
     valid: Boolean
   }
 
-  type BasicInfo {
+  type BasicInfoOfChain {
     length: Int!
     lastBlock: Block
   }

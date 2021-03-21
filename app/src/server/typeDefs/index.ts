@@ -1,13 +1,13 @@
 import { gql } from "apollo-server-express";
-import Block from "./Block";
-import BlockChain from "./BlockChain";
-import Nodes from "./Nodes";
+import Block from "./block-types";
+import BlockChain from "./blockchain-types";
+import Nodes from "./node-types";
 
 const typeDefs = gql`
   type Query {
     me: String!
     verifyChain: Boolean!
-    basicInfo: BasicInfo!
+    basicInfoOfChain: BasicInfoOfChain!
     paginateChain(input: PaginateInput!): PaginateChain!
     nodesLength: Int!
     chainLength: Int!

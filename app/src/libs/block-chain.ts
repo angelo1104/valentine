@@ -68,7 +68,7 @@ class BlockChain {
     }
   }
 
-  async createBlock(data: any, mine = true): Promise<Block | undefined> {
+  async createBlock(data: any, mine = true): Promise<Block> {
     try {
       const lastBlock: Block | null = await this.getLastBlock();
 
@@ -145,3 +145,5 @@ class BlockChain {
 }
 
 export default BlockChain;
+
+export type { BasicInfo };
