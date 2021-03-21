@@ -13,7 +13,7 @@ interface PaginateChain {
 }
 
 const resolvers = {
-  Queries: {
+  Query: {
     verifyChain: async (
       _: any,
       __: any,

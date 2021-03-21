@@ -4,7 +4,7 @@ import { ApolloServer } from "apollo-server-express";
 import mongoose, { Connection } from "mongoose";
 import * as http from "http";
 import socket, { Socket } from "socket.io";
-import { BlockInterface } from "../block";
+import { DocumentNode } from "graphql";
 
 // eslint-disable-next-line no-shadow
 enum NodeTypes {
@@ -13,13 +13,6 @@ enum NodeTypes {
   MINER,
   WALLET,
   SMALL_WALLET,
-}
-
-interface NodeData {
-  address: string;
-  type: NodeTypes;
-  chainLength: number;
-  lastBlock: BlockInterface;
 }
 
 class Node {
@@ -37,19 +30,16 @@ class Node {
 
   protected readonly sockets: any[];
 
-  constructor(type: NodeTypes, typeDefs: any, resolvers: any) {
+  constructor(type: NodeTypes, typeDefs: DocumentNode, resolvers: any) {
     this.type = type;
-    const app = express();
-    this.app = app;
+    this.app = express();
     this.sockets = [];
 
     // apollo graphql server
-    const server = new ApolloServer({
+    this.server = new ApolloServer({
       typeDefs,
       resolvers,
     });
-
-    this.server = server;
 
     this.httpServer = new http.Server(this.app);
 
@@ -58,7 +48,7 @@ class Node {
     this.io = socket(this.httpServer);
   }
 
-  startServer(port = 4000, mongoDbUrl: string) {
+  startServer(port = 4000, mongoDbUrl: string): void {
     this.app.use(cors());
     this.app.use(express.json());
 
@@ -88,7 +78,7 @@ class Node {
     });
   }
 
-  connectToMongodb(url: string) {
+  connectToMongodb(url: string): void {
     mongoose.connect(
       url,
       {
@@ -108,4 +98,4 @@ class Node {
 }
 
 export default Node;
-export { NodeData, NodeTypes };
+export { NodeTypes };

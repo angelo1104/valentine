@@ -15,7 +15,7 @@ dotenv.config();
 const port = process.env.PORT || "4000";
 const node = new FullNode(NodeTypes.FULL, typeDefs, resolvers);
 
-const randomNumber = randomInt(0, 50);
+const randomNumber = 0; // randomInt(0, 50);
 
 node.start(parseInt(port, 10) + randomNumber, process.env.MONGODB_URL || "");
 

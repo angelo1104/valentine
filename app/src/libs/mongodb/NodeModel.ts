@@ -46,6 +46,6 @@ const NodeSchema = new mongoose.Schema({
   },
 });
 
-const NodeModel = mongoose.model(`nodes${randomInt(0, 50)}`, NodeSchema);
+const NodeModel = mongoose.model(`nodes`, NodeSchema);
 
 export default NodeModel;

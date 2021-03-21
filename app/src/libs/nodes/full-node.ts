@@ -1,9 +1,7 @@
 import { ApolloServer } from "apollo-server-express";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import ss from "socket.io-stream";
 import publicIp from "public-ip";
 import axios from "axios";
+import { DocumentNode } from "graphql";
 import Node, { NodeTypes } from "./node";
 import BlockChain from "../block-chain";
 import seedNodeClient from "../../apollo-client/seedNodeClient";
@@ -29,13 +27,13 @@ class FullNode extends Node {
 
   constructor(
     public type: NodeTypes,
-    private typeDefs: any,
+    private typeDefs: DocumentNode,
     private resolvers: any,
   ) {
     super(type, typeDefs, resolvers);
 
     this.blockChain = new BlockChain();
-    const server = new ApolloServer({
+    this.server = new ApolloServer({
       typeDefs,
       resolvers,
       context: ({ req }) => ({
@@ -43,20 +41,18 @@ class FullNode extends Node {
         blockChain: this.blockChain,
       }),
     });
-
-    this.server = server;
     this.blockChain.createGenesis();
 
     this.app.use("/nodes", router);
   }
 
-  async start(port = 4000, mongoDbUrl: string) {
+  async start(port = 4000, mongoDbUrl: string): Promise<void> {
     this.startServer(port, mongoDbUrl);
 
-    this.syncUp(port);
+    await this.syncUp(port);
   }
 
-  async syncUp(port = 4000) {
+  async syncUp(port = 4000): Promise<void> {
     try {
       // use localhost in development because it caused ip address issues in syncing up with nodes
       const externalIp =
@@ -68,6 +64,7 @@ class FullNode extends Node {
 
       await this.connectToSeedNode(externalUrl);
       await this.setupNodes(externalUrl);
+
       // for debugging purposes
       console.log("successfully connected to the seed node");
     } catch (e) {
@@ -76,7 +73,7 @@ class FullNode extends Node {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async connectToSeedNode(externalUrl: URL) {
+  async connectToSeedNode(externalUrl: URL): Promise<void> {
     try {
       await seedNodeClient.mutate({
         mutation: ADD_NODE,
@@ -94,7 +91,7 @@ class FullNode extends Node {
     }
   }
 
-  async setupNodes(externalUrl: URL) {
+  async setupNodes(externalUrl: URL): Promise<void> {
     try {
       const lastBlock = await this.blockChain.getLastBlock();
 
