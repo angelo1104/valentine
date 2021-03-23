@@ -136,37 +136,25 @@ class FullNode extends Node {
         // initialize ordered bulk for fast read and write ops
         const bulk = NodeModel.collection.initializeOrderedBulkOp();
 
+        // delete all the nodes except me from the nodes db
+        bulk
+          .find({
+            address: { $ne: externalUrl.origin },
+          })
+          .delete();
+
         // loop through using for of loop because for of allows breaking up.
         // eslint-disable-next-line no-restricted-syntax
         for (const node of allNodesExceptMe) {
           try {
             console.info(`noder ${node.address}`);
 
-            const {
-              data: { nodes },
-              // eslint-disable-next-line no-await-in-loop
-            } = await axios.get(`${node.address}/nodes`);
+            // eslint-disable-next-line no-await-in-loop
+            const { data, } = await axios.get(`${node.address}/nodes`);
 
-            const newNodesExceptMe = filterNodesForMe(nodes);
-
-            bulk
-              .find({
-                address: { $ne: externalUrl.origin },
-              })
-              .delete();
-
-            newNodesExceptMe.forEach((newNode: NodeInterface) => {
-              bulk.insert({
-                ...newNode,
-              });
-            });
-
-            if (newNodesExceptMe.length) {
-              // eslint-disable-next-line no-await-in-loop
-              await bulk.execute();
-              console.log("nodes", newNodesExceptMe, externalUrl.origin);
-              break;
-            }
+            bulk.insert({
+              ...node
+            })
           } catch (e) {
             console.error("error while working on with nodes", e);
           }
