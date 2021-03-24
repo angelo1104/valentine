@@ -2,12 +2,14 @@ import { ApolloServer } from "apollo-server-express";
 import publicIp from "public-ip";
 import axios from "axios";
 import { DocumentNode } from "graphql";
+import mongoose from "mongoose";
 import Node, { NodeTypes } from "./node";
 import BlockChain from "../block-chain";
 import seedNodeClient from "../../apollo-client/seedNodeClient";
 import { ADD_NODE, GET_TOP_NODES } from "../../apollo-client/Queries";
 import NodeModel from "../mongodb/NodeModel";
 import router from "../../server/routes/nodes";
+import listenNodes from "../db-listeners/nodes";
 
 interface NodeInterface {
   address: string;
@@ -49,6 +51,9 @@ class FullNode extends Node {
   async start(port = 4000, mongoDbUrl: string): Promise<void> {
     this.startServer(port, mongoDbUrl);
 
+    // listen for changes in the mongoose db for nodes collection
+    listenNodes()
+
     await this.syncUp(port);
   }
 
@@ -68,7 +73,7 @@ class FullNode extends Node {
       // for debugging purposes
       console.log("successfully connected to the seed node");
     } catch (e) {
-      console.error("error", e);
+      // console.error("error", e);
     }
   }
 
@@ -150,18 +155,18 @@ class FullNode extends Node {
             console.info(`noder ${node.address}`);
 
             // eslint-disable-next-line no-await-in-loop
-            const { data, } = await axios.get(`${node.address}/nodes`);
+            const {data} = await axios.get(`${node.address}/nodes`);
 
             bulk.insert({
               ...node
             })
           } catch (e) {
-            console.error("error while working on with nodes", e);
+            // console.error("error while working on with nodes", e);
           }
         }
       }
     } catch (e) {
-      console.error("perror", e);
+      // console.error("perror", e);
     }
   }
 }
