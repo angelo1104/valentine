@@ -6,9 +6,12 @@ const listen = (): void => {
 
         changeStream.on("change", change=> {
             console.log("changed...")
+
             switch (change.operationType) {
                 case "insert":
                 {
+                    const { fullDocument } = change
+
                     console.log("inserted")
                     break
                 }

@@ -11,6 +11,15 @@ const typeDefs = gql`
     prevHash: String!
     difficulty: Int!
   }
+
+  input BlockInput {
+    index: Int!
+    nonce: Float!
+    timestamp: Float!
+    data: JSON!
+    prevHash: String!
+    difficulty: Int!
+  }
 `;
 
 export default typeDefs;

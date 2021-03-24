@@ -13,6 +13,17 @@ const resolvers = {
     paginateNodes: async (_: any, { input: { page } }: any) =>
       paginate(NUMBER_PER_NODES_PAGINATION, page, NodeModel),
   },
+  Mutation: {
+    connectNode: async (_: any, { input }: any) => {
+      return NodeModel.findOneAndUpdate(
+        {
+          address: input.address,
+        },
+        { ...input },
+        { upsert: true },
+      ).exec();
+    },
+  },
 };
 
 export default lodash.merge(resolvers, blockChainResolvers);

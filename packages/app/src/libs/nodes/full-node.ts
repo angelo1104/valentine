@@ -52,7 +52,7 @@ class FullNode extends Node {
     this.startServer(port, mongoDbUrl);
 
     // listen for changes in the mongoose db for nodes collection
-    listenNodes()
+    listenNodes();
 
     await this.syncUp(port);
   }
@@ -155,11 +155,14 @@ class FullNode extends Node {
             console.info(`noder ${node.address}`);
 
             // eslint-disable-next-line no-await-in-loop
-            const {data} = await axios.get(`${node.address}/nodes`);
+            const { data } = await axios.get(`${node.address}/basic-info`);
 
             bulk.insert({
-              ...node
-            })
+              ...node,
+              length: data?.length,
+              lastBlock: data?.lastBlock,
+              lastConnected: Date.now(),
+            });
           } catch (e) {
             // console.error("error while working on with nodes", e);
           }

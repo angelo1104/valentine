@@ -22,6 +22,14 @@ const typeDefs = gql`
     length: Int!
     lastConnected: Float!
   }
+
+  input ConnectNodeType {
+    address: String!
+    type: NodeType!
+    length: Int!
+    lastConnected: Float!
+    lastBlock: BlockInput!
+  }
 `;
 
 export default typeDefs;

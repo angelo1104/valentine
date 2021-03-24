@@ -16,6 +16,7 @@ const typeDefs = gql`
 
   type Mutation {
     createBlock(data: JSON!): Block!
+    connectNode(input: ConnectNodeType!): Node!
   }
 `;
 
