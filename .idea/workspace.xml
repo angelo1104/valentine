@@ -3,14 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="9f60b88a-dc83-4bca-9b8a-32e337ca5792" name="Default Changelist" comment="Made sure that the loop breaks if the block chain is found invalid at any point no memory resources wasted.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/libs/db-listeners/nodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/libs/db-listeners/nodes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/libs/nodes/full-node.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/libs/nodes/full-node.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/server/resolvers/full-node-resolvers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/server/resolvers/full-node-resolvers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/server/routes/nodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/server/routes/nodes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/server/typeDefs/block-types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/server/typeDefs/block-types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/server/typeDefs/full-node-types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/server/typeDefs/full-node-types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/server/typeDefs/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/server/typeDefs/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/server/typeDefs/node-types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/server/typeDefs/node-types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/packages/seed-node/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/pages/_app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/pages/api/graphql.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/pages/api/hello.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/pages/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/public/vercel.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/src/directives.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/src/utils/getLengthOfCollection.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/styles/Home.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/styles/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/yarn.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +118,8 @@
       <workItem from="1615871981679" duration="198000" />
       <workItem from="1615872307857" duration="36000" />
       <workItem from="1616502393307" duration="3643000" />
-      <workItem from="1616592202452" duration="6392000" />
+      <workItem from="1616592202452" duration="6679000" />
+      <workItem from="1616648754503" duration="269000" />
     </task>
     <task id="LOCAL-00001" summary="Created a getBlock from doc function ,added type descriptions to all functions in block chain class. and did descending order for get last blcok instead of ascending.">
       <created>1615646220707</created>
