@@ -2,19 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f60b88a-dc83-4bca-9b8a-32e337ca5792" name="Default Changelist" comment="Made sure that the loop breaks if the block chain is found invalid at any point no memory resources wasted.">
-      <change afterPath="$PROJECT_DIR$/packages/app/src/fullNode.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/app/src/port.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/app.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/libs/mongodb/NodeModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/libs/mongodb/NodeModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/src/libs/nodes/node.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/libs/nodes/node.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/seed-node/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/seed-node/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/seed-node/src/directives.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/seed-node/src/directives.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/seed-node/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/packages/seed-node/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +16,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="GraphQL File" />
         <option value="TypeScript File" />
       </list>
     </option>
@@ -55,25 +47,27 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.linters.configure.manually.selectedeslint" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/helpers/seed-node" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/packages/valentine-app" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.standard" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/packages/app/node_modules/eslint" />
+    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/packages/valentine-app/node_modules/eslint" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettier.import.notification.dismissed" value="true" />
-    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/packages/app/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/packages/valentine-app/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/packages/valentine-app/src/modules/app" />
+      <recent name="$PROJECT_DIR$/packages/valentine-app/src/modules" />
       <recent name="$PROJECT_DIR$/packages" />
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -120,7 +114,10 @@
       <workItem from="1616502393307" duration="3643000" />
       <workItem from="1616592202452" duration="6679000" />
       <workItem from="1616648754503" duration="4956000" />
-      <workItem from="1617010761948" duration="680000" />
+      <workItem from="1617010761948" duration="1650000" />
+      <workItem from="1617015140729" duration="224000" />
+      <workItem from="1617015387603" duration="4800000" />
+      <workItem from="1617028709935" duration="4558000" />
     </task>
     <task id="LOCAL-00001" summary="Created a getBlock from doc function ,added type descriptions to all functions in block chain class. and did descending order for get last blcok instead of ascending.">
       <created>1615646220707</created>

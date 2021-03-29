@@ -1,0 +1,10 @@
+scalar JSON
+
+type BlockInterface {
+  index: Int!
+  data: JSON!
+  nonce: Int!
+  timestamp: Float!
+  prevHash: String!
+  difficulty: Int!
+}
