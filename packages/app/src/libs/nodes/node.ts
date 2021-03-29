@@ -5,6 +5,7 @@ import mongoose, { Connection } from "mongoose";
 import * as http from "http";
 import socket, { Socket } from "socket.io";
 import { DocumentNode } from "graphql";
+import { AddressInfo } from "net";
 
 // eslint-disable-next-line no-shadow
 enum NodeTypes {
@@ -98,6 +99,11 @@ class Node {
         }
       },
     );
+  }
+
+  getAddress(): string | AddressInfo | null {
+    if (!this.httpServer) return null;
+    return this.httpServer.address();
   }
 }
 

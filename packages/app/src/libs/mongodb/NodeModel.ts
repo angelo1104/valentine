@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { randomInt } from "crypto";
+import fullNode from "../../fullNode";
 
 const NodeSchema = new mongoose.Schema({
   address: {
@@ -46,6 +46,6 @@ const NodeSchema = new mongoose.Schema({
   },
 });
 
-const NodeModel = mongoose.model(`nodes${randomInt(0, 50)}`, NodeSchema);
+const NodeModel = mongoose.model(`nodes`, NodeSchema);
 
 export default NodeModel;

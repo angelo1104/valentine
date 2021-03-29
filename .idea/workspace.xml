@@ -2,21 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f60b88a-dc83-4bca-9b8a-32e337ca5792" name="Default Changelist" comment="Made sure that the loop breaks if the block chain is found invalid at any point no memory resources wasted.">
+      <change afterPath="$PROJECT_DIR$/packages/app/src/fullNode.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/app/src/port.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/packages/seed-node/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/pages/_app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/pages/api/graphql.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/pages/api/hello.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/pages/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/public/vercel.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/src/directives.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/src/utils/getLengthOfCollection.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/styles/Home.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/styles/globals.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/helpers/seed-node/yarn.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/libs/mongodb/NodeModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/libs/mongodb/NodeModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/libs/nodes/node.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/libs/nodes/node.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/seed-node/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/seed-node/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/seed-node/src/directives.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/seed-node/src/directives.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/seed-node/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/packages/seed-node/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +66,7 @@
     <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="prettier.import.notification.dismissed" value="true" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/packages/app/node_modules/prettier" />
     <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
@@ -75,6 +74,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/packages" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -119,7 +119,8 @@
       <workItem from="1615872307857" duration="36000" />
       <workItem from="1616502393307" duration="3643000" />
       <workItem from="1616592202452" duration="6679000" />
-      <workItem from="1616648754503" duration="269000" />
+      <workItem from="1616648754503" duration="4956000" />
+      <workItem from="1617010761948" duration="680000" />
     </task>
     <task id="LOCAL-00001" summary="Created a getBlock from doc function ,added type descriptions to all functions in block chain class. and did descending order for get last blcok instead of ascending.">
       <created>1615646220707</created>
