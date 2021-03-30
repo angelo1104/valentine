@@ -1,5 +1,5 @@
 import { BlockInterface } from '../../graphql';
-import Utils from '../utils/utils';
+import Utils from '../../utils/utils';
 
 class Block {
   constructor(

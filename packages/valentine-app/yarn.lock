@@ -6778,6 +6778,11 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
+run-script-webpack-plugin@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/run-script-webpack-plugin/-/run-script-webpack-plugin-0.0.11.tgz#04c510bed06b907fa2285e75feece71a25691171"
+  integrity sha512-QmuBhiqBPmhQLpO5vMBHVTAGyoPBnrCM5gQ3IzgieiImBXiBbXcIv4kysCT1gilFNFxQk22oKQfiIhWbT/zXCw==
+
 rxjs@6.6.3:
   version "6.6.3"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
@@ -7965,7 +7970,7 @@ webidl-conversions@^6.1.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-6.1.0.tgz#9111b4d7ea80acd40f5270d666621afa78b69514"
   integrity sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==
 
-webpack-node-externals@2.5.2:
+webpack-node-externals@2.5.2, webpack-node-externals@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/webpack-node-externals/-/webpack-node-externals-2.5.2.tgz#178e017a24fec6015bc9e672c77958a6afac861d"
   integrity sha512-aHdl/y2N7PW2Sx7K+r3AxpJO+aDMcYzMQd60Qxefq3+EwhewSbTBqNumOsCE1JsCUNoyfGj5465N0sSf6hc/5w==
@@ -7978,7 +7983,7 @@ webpack-sources@^2.1.1:
     source-list-map "^2.0.1"
     source-map "^0.6.1"
 
-webpack@5.28.0:
+webpack@5.28.0, webpack@^5.28.0:
   version "5.28.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.28.0.tgz#0de8bcd706186b26da09d4d1e8cbd3e4025a7c2f"
   integrity sha512-1xllYVmA4dIvRjHzwELgW4KjIU1fW4PEuEnjsylz7k7H5HgPOctIq7W1jrt3sKH9yG5d72//XWzsHhfoWvsQVg==

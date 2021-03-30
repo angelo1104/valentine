@@ -1,5 +1,5 @@
 import { BlockInterface } from '../graphql';
-import Utils from '../modules/utils/utils';
+import Utils from '../utils/utils';
 
 export default class Constants {
   static get genesisBlock(): BlockInterface {
