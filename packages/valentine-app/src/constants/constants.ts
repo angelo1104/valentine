@@ -20,4 +20,8 @@ export default class Constants {
       difficulty: 1,
     };
   }
+
+  static get chainCollection(): string {
+    return 'chain';
+  }
 }

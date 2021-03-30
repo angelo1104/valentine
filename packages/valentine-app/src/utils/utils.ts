@@ -1,6 +1,7 @@
 import sizeof from 'object-sizeof';
 import { BlockInterface } from '../graphql';
 import crypto from 'crypto';
+import { BlockDocument } from '../mongodb/block.schema';
 
 export default abstract class Utils {
   // get unix time in seconds NO MILLISECONDS
@@ -28,4 +29,11 @@ export default abstract class Utils {
     // substr uses length instead of end value read more on google for difference NO substring
     return blockHash.substr(0, block.difficulty) === puzzleZeroes;
   }
+
+  static getBlockFromDoc = (blockDoc: {
+    _doc: BlockDocument;
+  }): BlockInterface => {
+    const { _id, __v, ...block } = blockDoc._doc;
+    return block;
+  };
 }

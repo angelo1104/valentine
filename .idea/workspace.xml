@@ -116,7 +116,10 @@
       <workItem from="1617015140729" duration="224000" />
       <workItem from="1617015387603" duration="4800000" />
       <workItem from="1617028709935" duration="4701000" />
-      <workItem from="1617073864228" duration="3064000" />
+      <workItem from="1617073864228" duration="3285000" />
+      <workItem from="1617088428402" duration="4788000" />
+      <workItem from="1617101876504" duration="1877000" />
+      <workItem from="1617107389723" duration="5117000" />
     </task>
     <task id="LOCAL-00001" summary="Created a getBlock from doc function ,added type descriptions to all functions in block chain class. and did descending order for get last blcok instead of ascending.">
       <created>1615646220707</created>
