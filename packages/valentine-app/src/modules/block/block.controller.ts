@@ -7,7 +7,7 @@ export class BlockController {
   constructor(private readonly blockService: BlockService) {}
 
   @Get()
-  async blocker(): Promise<BlockInterface> {
+  async blocker(): Promise<{ block: BlockInterface; valid: boolean }> {
     const block = this.blockService.block({
       prevHash: '00',
       index: 1,
@@ -17,6 +17,6 @@ export class BlockController {
       difficulty: 1,
     });
     await block.mine();
-    return block.blockInformation;
+    return { block: block.blockInformation, valid: block.verifyBlock() };
   }
 }

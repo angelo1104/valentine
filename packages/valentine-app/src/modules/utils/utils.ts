@@ -2,7 +2,7 @@ import sizeof from 'object-sizeof';
 import { BlockInterface } from '../../graphql';
 import { SHA256 } from 'crypto-js';
 
-export default class Utils {
+export default abstract class Utils {
   static get time(): number {
     // get the current unix time in seconds NO MILLISECONDS
     return Math.floor(new Date().getTime() / 1000);
