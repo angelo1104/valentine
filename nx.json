@@ -21,6 +21,12 @@
   "projects": {
     "valentine": {
       "tags": []
+    },
+    "block": {
+      "tags": []
+    },
+    "utils": {
+      "tags": []
     }
   }
 }

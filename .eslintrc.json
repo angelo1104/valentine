@@ -18,6 +18,21 @@
               }
             ]
           }
+        ],
+        "@typescript-eslint/ban-types": ["error",
+          {
+            "types": {
+              "String": false,
+              "Boolean": false,
+              "Number": false,
+              "Symbol": false,
+              "{}": true,
+              "Object": true,
+              "object": true,
+              "Function": true
+            },
+            "extendDefaults": true
+          }
         ]
       }
     },
