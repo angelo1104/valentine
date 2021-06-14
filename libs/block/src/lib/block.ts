@@ -1,5 +1,5 @@
 import { String, Number, Record, Unknown, Static } from 'runtypes';
-import { getCurrentTime } from '@valentine/utils';
+import { getCurrentTime, hash, sizeOfObject } from '@valentine/utils';
 
 const PositiveInteger = Number.withConstraint((n) => n > 0 && n % 1 === 0);
 
@@ -19,6 +19,7 @@ class Block {
   protected block: BlockType;
 
   public readonly maxNonce = 4_000_000_000;
+  public readonly maxSize = 1_000_000;
 
   constructor(block: BlockType) {
     BlockSchema.check(block);
@@ -27,6 +28,10 @@ class Block {
 
   get blockInformation(): BlockType {
     return this.block;
+  }
+
+  get currentHash(): string {
+    return hash(this);
   }
 
   set setBlock(newBlock: BlockType) {
@@ -56,17 +61,47 @@ class Block {
           timestamp: currentTime,
         };
 
-        if (this.proofOfWork(block)) {
+        if (Block.proofOfWork(block)) {
           this.setBlock = block;
           mined = true;
           console.log('mined');
-          break;
+          return this.block;
         }
       }
     }
   }
 
-  static proofOfWork() {}
+  static proofOfWork(block: BlockType): boolean {
+    BlockSchema.check(block);
+
+    const { difficulty } = block;
+
+    PositiveInteger.check(difficulty);
+
+    const hashedBlock: string = new Block(block).currentHash;
+    const zeroes: string = Array.from({ length: difficulty })
+      .fill('0')
+      .join('');
+
+    return hashedBlock.substring(0, difficulty) === zeroes;
+  }
+
+  validateBlock(lastBlock?: BlockType): boolean {
+    if (sizeOfObject(this.block) > this.maxSize) return false;
+
+    if (lastBlock) {
+      BlockSchema.check(lastBlock);
+
+      if (!Block.proofOfWork(lastBlock)) return false;
+      if (sizeOfObject(lastBlock) > this.maxSize) return false;
+
+      if (lastBlock.hash !== this.block.previousHash) return false;
+
+      return lastBlock.index + 1 === this.block.index;
+    }
+
+    return Block.proofOfWork(this.block);
+  }
 }
 
 export default Block;
