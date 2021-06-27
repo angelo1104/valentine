@@ -3,5 +3,6 @@ module.exports = {
     '<rootDir>/apps/valentine',
     '<rootDir>/libs/block',
     '<rootDir>/libs/utils',
+    '<rootDir>/apps/test-runs',
   ],
 };

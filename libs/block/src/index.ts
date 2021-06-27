@@ -1,1 +1,3 @@
-export * from './lib/block';
+import Block from './lib/block';
+
+export default Block;

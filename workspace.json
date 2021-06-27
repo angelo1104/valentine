@@ -96,6 +96,56 @@
           }
         }
       }
+    },
+    "test-runs": {
+      "root": "apps/test-runs",
+      "sourceRoot": "apps/test-runs/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/test-runs",
+            "main": "apps/test-runs/src/main.ts",
+            "tsConfig": "apps/test-runs/tsconfig.app.json",
+            "assets": ["apps/test-runs/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/test-runs/src/environments/environment.ts",
+                  "with": "apps/test-runs/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "test-runs:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/test-runs/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/test-runs"],
+          "options": {
+            "jestConfig": "apps/test-runs/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

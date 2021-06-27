@@ -1,5 +1,6 @@
 import { String, Number, Record, Unknown, Static } from 'runtypes';
 import { getCurrentTime, hash, sizeOfObject } from '@valentine/utils';
+import { performance } from 'perf_hooks';
 
 const PositiveInteger = Number.withConstraint((n) => n > 0 && n % 1 === 0);
 
@@ -8,7 +9,6 @@ const BlockSchema = Record({
   data: Unknown,
   nonce: Number,
   previousHash: String,
-  hash: String,
   difficulty: Number,
   timestamp: PositiveInteger,
 });
@@ -40,35 +40,79 @@ class Block {
   }
 
   async mine() {
-    let previousTime: number = getCurrentTime();
-    let mined = false;
-
-    while (!mined) {
-      for (let nonce = 0; nonce <= this.maxNonce; nonce += 1) {
-        const currentTime = getCurrentTime();
-
-        // time changed
-        if (currentTime !== previousTime) {
-          // reset the nonce
-          nonce = 0;
-          previousTime = currentTime;
-          continue;
-        }
-
-        const block: BlockType = {
-          ...this.block,
-          nonce,
-          timestamp: currentTime,
-        };
-
-        if (Block.proofOfWork(block)) {
-          this.setBlock = block;
-          mined = true;
-          console.log('mined');
-          return this.block;
+    function* loopToMax(maxNonce: number) {
+      for (let i = 1; i <= maxNonce; i++) {
+        if (i === maxNonce) {
+          yield i;
+          // reset i if end reached.
+          i = 0;
+        } else {
+          yield i;
         }
       }
     }
+
+    const nonceGenerator = loopToMax(this.maxNonce);
+    const t0 = performance.now();
+    let mined = false;
+
+    const mineAsync = async () => {
+      let time = 0;
+      let currentNonce = nonceGenerator.next();
+
+      while (time < 200 && !currentNonce.done && !mined) {
+        const newBlock: BlockType = {
+          ...this.block,
+          nonce: currentNonce.value as number,
+          timestamp: getCurrentTime(),
+        };
+
+        if (Block.proofOfWork(newBlock)) {
+          mined = true;
+          console.log('completed the done');
+          return newBlock;
+        }
+
+        currentNonce = nonceGenerator.next();
+        time = performance.now() - t0;
+      }
+
+      if (!currentNonce.done) {
+        await setTimeout(mineAsync);
+      }
+    };
+
+    return await mineAsync();
+
+    // let previousTime: number = getCurrentTime();
+    // let mined = false;
+    //
+    // while (!mined) {
+    //   for (let nonce = 0; nonce <= this.maxNonce; nonce += 1) {
+    //     const currentTime = getCurrentTime();
+    //
+    //     // time changed
+    //     if (currentTime !== previousTime) {
+    //       // reset the nonce
+    //       nonce = 0;
+    //       previousTime = currentTime;
+    //       continue;
+    //     }
+    //
+    //     const block: BlockType = {
+    //       ...this.block,
+    //       nonce,
+    //       timestamp: currentTime,
+    //     };
+    //
+    //     if (Block.proofOfWork(block)) {
+    //       this.setBlock = block;
+    //       mined = true;
+    //       console.log('mined');
+    //       return this.block;
+    //     }
+    //   }
+    // }
   }
 
   static proofOfWork(block: BlockType): boolean {
@@ -86,18 +130,20 @@ class Block {
     return hashedBlock.substring(0, difficulty) === zeroes;
   }
 
-  validateBlock(lastBlock?: BlockType): boolean {
+  validateBlock(lastBlockData?: BlockType): boolean {
     if (sizeOfObject(this.block) > this.maxSize) return false;
+
+    const lastBlock = new Block(lastBlockData);
 
     if (lastBlock) {
       BlockSchema.check(lastBlock);
 
-      if (!Block.proofOfWork(lastBlock)) return false;
+      if (!Block.proofOfWork(lastBlockData)) return false;
       if (sizeOfObject(lastBlock) > this.maxSize) return false;
 
-      if (lastBlock.hash !== this.block.previousHash) return false;
+      if (lastBlock.currentHash !== this.block.previousHash) return false;
 
-      return lastBlock.index + 1 === this.block.index;
+      return lastBlock.block.index + 1 === this.block.index;
     }
 
     return Block.proofOfWork(this.block);
